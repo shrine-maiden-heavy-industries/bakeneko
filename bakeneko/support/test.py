@@ -19,15 +19,27 @@ try:
 except ImportError:
 	HAS_FABRIC = False
 
+# DUT Test Communication
+try:
+	from serial import Serial
+	HAS_PYSERIAL = True
+except ImportError:
+	HAS_PYSERIAL = False
+
 
 IN_CI       = getenv('GITHUB_WORKSPACE') is not None
 SKIP_REMOTE = getenv('BAKENEKO_SKIP_TESTS_REMOTE') is not None
+SKIP_SERIAL = getenv('BAKENEKO_SKIP_TESTS_SERIAL') is not None
 IS_LINUX    = system() == 'Linux'
 
 # Only allow remote tests if we have fabric, are not in CI, on Linux, and not explicitly skipping them
 ALLOW_REMOTE_TESTS = all((HAS_FABRIC, IS_LINUX, not IN_CI, not SKIP_REMOTE))
+# Only allow serial tests if we have pyserial, are not in CI, on linux, and not explicitly skipping them
+ALLOW_SERIAL_TESTS = all((HAS_PYSERIAL, IS_LINUX, not IN_CI, not SKIP_SERIAL))
+
 __all__ = (
 	'BakenekoRemoteTest',
+	'BakenekoSerialTest',
 )
 
 
@@ -196,3 +208,94 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 		if not self.LONG_LIVED:
 			self._close_connection()
 
+
+class BakenekoSerialTestMeta(type):
+	'''
+	Like the :py:class:`BakenekoRemoteTestMeta` metaclass, this is used to automatically annotate all
+	tests within a :py:class:`BakenekoSerialTest` test class with :py:meth:`unitest.skip` if we don't
+	have serial test support capabilities.
+
+	The check's are currently as follows:
+		* We are not running in CI. (checks the existence of the ``GITHUB_WORKSPACE`` env var)
+		* We can import :py:mod:`serial` for talking to the DUT.
+		* The ``BAKENEKO_SKIP_TESTS_SERIAL`` environment variable is not set.
+		* We are running on Linux.
+
+	If any of the above checks fail, all serial tests are disabled.
+
+	'''
+
+	def __new__(
+		cls: type[type], name: str, bases: tuple[type, ...], namespace: dict[str, Any]
+	) -> 'BakenekoSerialTestMeta':
+		for attr, val in namespace.items():
+			if isfunction(val):
+				if not ALLOW_REMOTE_TESTS and val.__name__.startswith('test_'):
+					namespace[attr] = skip('Serial tests disabled')(val)
+		return cast(BakenekoSerialTestMeta, type.__new__(cls, name, bases, namespace))
+
+
+class BakenekoSerialTest(TestCase, metaclass = BakenekoSerialTestMeta):
+	'''
+	Run :py:mod:`unitest` based test cases that interact with a DUT over serial
+
+	Attributes
+	----------
+	SERIAL_PORT : str | None
+		The serial port to connect to. If not overloaded it reads the value from
+		the ``BAKENEKO_SERIAL_TEST_PORT`` environment variable if it exists, otherwise
+		the value is ``None``.
+
+	REMOTE_USER : int
+		The user on the remote host to connect as. If not overloaded it reads the
+		value from the ``BAKENEKO_SERIAL_TEST_BAUD`` environment variable if it exists.
+		(default: 115200)
+
+
+	LONG_LIVED : bool
+		If the serial connection is long-lived. If set to true, the connection will be
+		established on construction of the test class and live for every single test case
+		run. Otherwise, the connection is established prior to each ``test_`` case and
+		torn down after. (default: True)
+	'''
+
+
+	SERIAL_PORT = getenv('BAKENEKO_SERIAL_TEST_PORT')
+	SERIAL_BAUD = int(getenv('BAKENEKO_SERIAL_TEST_BAUD', '115200'))
+
+
+	LONG_LIVED  = True
+
+	_remote_connection: 'Serial | None' = None
+
+	def _setup_connection(self) -> bool:
+		''' Setup the serial connection '''
+		if ALLOW_SERIAL_TESTS:
+			self._remote_connection = Serial(
+				port = self.SERIAL_PORT, baudrate = self.SERIAL_BAUD
+			)
+			return True
+		return False
+
+	def _close_connection(self) -> bool:
+		''' Close the serial connection '''
+
+		if ALLOW_SERIAL_TESTS and self._remote_connection is not None:
+			self._remote_connection.close()
+			return True
+		return False
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+
+		if self.LONG_LIVED:
+			self._setup_connection()
+
+
+	def setUp(self) -> None:
+		if not self.LONG_LIVED:
+			self._setup_connection()
+
+	def tearDown(self) -> None:
+		if not self.LONG_LIVED:
+			self._close_connection()
