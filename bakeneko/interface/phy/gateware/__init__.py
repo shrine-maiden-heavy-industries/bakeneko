@@ -15,6 +15,8 @@ to do so.
 
 '''
 
-__all__ = (
+from .phy import GatewarePhy
 
+__all__ = (
+	'GatewarePhy',
 )
