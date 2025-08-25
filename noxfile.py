@@ -17,6 +17,7 @@ DIST_DIR  = BUILD_DIR / 'dist'
 
 IN_CI           = getenv('GITHUB_WORKSPACE') is not None
 ENABLE_COVERAGE = IN_CI or (getenv('BAKENEKO_TEST_COVERAGE') is not None)
+LOCAL_TORII_DIR = getenv('LOCAL_TORII_DIR')
 
 # Default sessions to run
 nox.options.sessions = (
@@ -63,9 +64,22 @@ def test(session: Session) -> None:
 			if (baud := debug_cfg.get('baud')) is not None:
 				env['BAKENEKO_SERIAL_TEST_BAUD'] = baud
 
-	unittest_args = ('-m', 'unittest', 'discover', '-v', '-s', str(ROOT_DIR))
+	unittest_args = ('-m', 'unittest', 'discover', '-s', str(ROOT_DIR))
 
 	_setup_test_env()
+
+	# XXX(aki):
+	# Because we need some things in upstream Torii that are not released, ensure we are
+	# using the upstream Git HEAD, otherwise the local dev install will be used if not in CI
+	if IN_CI or LOCAL_TORII_DIR is None:
+		if LOCAL_TORII_DIR is None:
+			session.warn('Bakeneko uses some unreleased Torii features and bug fixes, and the')
+			session.warn('`LOCAL_TORII_DIR` environment variable was not set, falling back to Git')
+		session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	else:
+		if not Path(LOCAL_TORII_DIR).resolve().exists():
+			session.error('Environment variable `LOCAL_TORII_DIR` is set but does not exist!')
+		session.install('-e', LOCAL_TORII_DIR)
 
 	session.install('-e', '.[dev]')
 	if ENABLE_COVERAGE:
