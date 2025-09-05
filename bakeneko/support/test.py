@@ -38,10 +38,9 @@ ALLOW_REMOTE_TESTS = all((HAS_FABRIC, IS_LINUX, not IN_CI, not SKIP_REMOTE))
 ALLOW_SERIAL_TESTS = all((HAS_PYSERIAL, IS_LINUX, not IN_CI, not SKIP_SERIAL))
 
 __all__ = (
-	'BakenekoRemoteTest',
-	'BakenekoSerialTest',
+	'BakenekoRemoteTestCase',
+	'BakenekoSerialTestCase',
 )
-
 
 class BakenekoRemoteTestMeta(type):
 	'''
@@ -67,8 +66,32 @@ class BakenekoRemoteTestMeta(type):
 					namespace[attr] = skip('Remote tests disabled')(val)
 		return cast(BakenekoRemoteTestMeta, type.__new__(cls, name, bases, namespace))
 
+class BakenekoSerialTestMeta(type):
+	'''
+	Like the :py:class:`BakenekoRemoteTestMeta` metaclass, this is used to automatically annotate all
+	tests within a :py:class:`BakenekoSerialTest` test class with :py:meth:`unitest.skip` if we don't
+	have serial test support capabilities.
 
-class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
+	The check's are currently as follows:
+		* We are not running in CI. (checks the existence of the ``GITHUB_WORKSPACE`` env var)
+		* We can import :py:mod:`serial` for talking to the DUT.
+		* The ``BAKENEKO_SKIP_TESTS_SERIAL`` environment variable is not set.
+		* We are running on Linux.
+
+	If any of the above checks fail, all serial tests are disabled.
+
+	'''
+
+	def __new__(
+		cls: type[type], name: str, bases: tuple[type, ...], namespace: dict[str, Any]
+	) -> 'BakenekoSerialTestMeta':
+		for attr, val in namespace.items():
+			if isfunction(val):
+				if not ALLOW_REMOTE_TESTS and val.__name__.startswith('test_'):
+					namespace[attr] = skip('Serial tests disabled')(val)
+		return cast(BakenekoSerialTestMeta, type.__new__(cls, name, bases, namespace))
+
+class BakenekoRemoteTestCase(TestCase, metaclass = BakenekoRemoteTestMeta):
 	'''
 	Run :py:mod:`unitest` based test cases that interact with a remote host over SSH.
 
@@ -96,7 +119,6 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 		torn down after. (default: True)
 	'''
 
-
 	REMOTE_HOST = getenv('BAKENEKO_REMOTE_TEST_HOST')
 	REMOTE_USER = getenv('BAKENEKO_REMOTE_TEST_USER')
 	REMOTE_KEY  = getenv('BAKENEKO_REMOTE_TEST_KEY' )
@@ -107,8 +129,12 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 
 	def _setup_connection(self) -> bool:
 		''' Setup the Fabric SSH connection '''
+
 		if ALLOW_REMOTE_TESTS:
-			self._remote_connection = Connection(
+			# NOTE(aki):
+			# The `type: ignore` is due to the type checking not being able to see that if we
+			# do end up in this branch of the if then `Connection` is not unbound.
+			self._remote_connection = Connection( # type: ignore
 				self.REMOTE_HOST, self.REMOTE_USER,
 				connect_kwargs = {
 					'key_filename': self.REMOTE_KEY
@@ -128,6 +154,7 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 	def remote_put_file(self, file: Path | IOBase, dest: str):
 		'''
 		Send a file to the remote system
+
 		Parameters
 		----------
 		file : Path | IOBase
@@ -189,7 +216,7 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 	def assertRemoteConnected(self):
 		''' Assert that we are connected to the remote session '''
 
-		res = self.remote_run('uname -a')
+		res = self.remote_run_cmd('uname -a')
 		if res is None or not res.ok:
 			raise self.failureException('Remote connection failed')
 
@@ -199,7 +226,6 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 		if self.LONG_LIVED:
 			self._setup_connection()
 
-
 	def setUp(self) -> None:
 		if not self.LONG_LIVED:
 			self._setup_connection()
@@ -208,34 +234,7 @@ class BakenekoRemoteTest(TestCase, metaclass = BakenekoRemoteTestMeta):
 		if not self.LONG_LIVED:
 			self._close_connection()
 
-
-class BakenekoSerialTestMeta(type):
-	'''
-	Like the :py:class:`BakenekoRemoteTestMeta` metaclass, this is used to automatically annotate all
-	tests within a :py:class:`BakenekoSerialTest` test class with :py:meth:`unitest.skip` if we don't
-	have serial test support capabilities.
-
-	The check's are currently as follows:
-		* We are not running in CI. (checks the existence of the ``GITHUB_WORKSPACE`` env var)
-		* We can import :py:mod:`serial` for talking to the DUT.
-		* The ``BAKENEKO_SKIP_TESTS_SERIAL`` environment variable is not set.
-		* We are running on Linux.
-
-	If any of the above checks fail, all serial tests are disabled.
-
-	'''
-
-	def __new__(
-		cls: type[type], name: str, bases: tuple[type, ...], namespace: dict[str, Any]
-	) -> 'BakenekoSerialTestMeta':
-		for attr, val in namespace.items():
-			if isfunction(val):
-				if not ALLOW_REMOTE_TESTS and val.__name__.startswith('test_'):
-					namespace[attr] = skip('Serial tests disabled')(val)
-		return cast(BakenekoSerialTestMeta, type.__new__(cls, name, bases, namespace))
-
-
-class BakenekoSerialTest(TestCase, metaclass = BakenekoSerialTestMeta):
+class BakenekoSerialTestCase(TestCase, metaclass = BakenekoSerialTestMeta):
 	'''
 	Run :py:mod:`unitest` based test cases that interact with a DUT over serial
 
@@ -259,10 +258,8 @@ class BakenekoSerialTest(TestCase, metaclass = BakenekoSerialTestMeta):
 		torn down after. (default: True)
 	'''
 
-
 	SERIAL_PORT = getenv('BAKENEKO_SERIAL_TEST_PORT')
 	SERIAL_BAUD = int(getenv('BAKENEKO_SERIAL_TEST_BAUD', '115200'))
-
 
 	LONG_LIVED  = True
 
@@ -270,8 +267,12 @@ class BakenekoSerialTest(TestCase, metaclass = BakenekoSerialTestMeta):
 
 	def _setup_connection(self) -> bool:
 		''' Setup the serial connection '''
+
 		if ALLOW_SERIAL_TESTS:
-			self._remote_connection = Serial(
+			# NOTE(aki):
+			# The `type: ignore` is due to the type checking not being able to see that if we
+			# do end up in this branch of the if then `Serial` is not unbound.
+			self._remote_connection = Serial( # type: ignore
 				port = self.SERIAL_PORT, baudrate = self.SERIAL_BAUD
 			)
 			return True
@@ -290,7 +291,6 @@ class BakenekoSerialTest(TestCase, metaclass = BakenekoSerialTestMeta):
 
 		if self.LONG_LIVED:
 			self._setup_connection()
-
 
 	def setUp(self) -> None:
 		if not self.LONG_LIVED:
