@@ -26,6 +26,7 @@ try:
 except ImportError:
 	HAS_PYSERIAL = False
 
+from torii.test import ToriiTestCase
 
 IN_CI       = getenv('GITHUB_WORKSPACE') is not None
 SKIP_REMOTE = getenv('BAKENEKO_SKIP_TESTS_REMOTE') is not None
@@ -40,6 +41,7 @@ ALLOW_SERIAL_TESTS = all((HAS_PYSERIAL, IS_LINUX, not IN_CI, not SKIP_SERIAL))
 __all__ = (
 	'BakenekoRemoteTestCase',
 	'BakenekoSerialTestCase',
+	'PCIeGatewareTestCase'
 )
 
 class BakenekoRemoteTestMeta(type):
@@ -299,3 +301,12 @@ class BakenekoSerialTestCase(TestCase, metaclass = BakenekoSerialTestMeta):
 	def tearDown(self) -> None:
 		if not self.LONG_LIVED:
 			self._close_connection()
+
+class PCIeGatewareTestCase(ToriiTestCase):
+	'''
+	A specialization of the :py:class:`torii.test.ToriiTestCase` for the Bakeneko PCIe gateware.
+
+	It primarily provides helper asserts for various things related to PCIe traffic and symbols.
+	'''
+
+	domains = (*ToriiTestCase.domains, ('pcie', 1e8),)
