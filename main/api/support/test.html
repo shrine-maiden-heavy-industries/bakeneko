@@ -20,7 +20,7 @@
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
 
-<title>Testing Infrastructure - Bakeneko 0.1.dev21 Documentation</title>
+<title>Testing Infrastructure - Bakeneko 0.1.dev25 Documentation</title>
 
 <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=25af2a20" />
@@ -203,7 +203,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Bakeneko 0.1.dev21 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Bakeneko 0.1.dev25 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -226,7 +226,7 @@
       
       <div class="sidebar-sticky">
 <a class="sidebar-brand" href="../../index.html">
-	<span class="sidebar-brand-text">Bakeneko 0.1.dev21 Documentation</span>
+	<span class="sidebar-brand-text">Bakeneko 0.1.dev25 Documentation</span>
 	
   </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -366,8 +366,8 @@
 <span id="testing-infrastructure"></span><h1>Testing Infrastructure<a class="headerlink" href="#module-bakeneko.support.test" title="Link to this heading">¶</a></h1>
 <p>Helpers and utilities for various Bakeneko tests</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTest">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bakeneko.support.test.</span></span><span class="sig-name descname"><span class="pre">BakenekoRemoteTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTest" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTestCase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bakeneko.support.test.</span></span><span class="sig-name descname"><span class="pre">BakenekoRemoteTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTestCase" title="Link to this definition">¶</a></dt>
 <dd><p>Run <code class="xref py py-mod docutils literal notranslate"><span class="pre">unitest</span></code> based test cases that interact with a remote host over SSH.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
@@ -389,32 +389,32 @@ torn down after. (default: True)</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTest.remote_put_file">
-<span class="sig-name descname"><span class="pre">remote_put_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.13)"><span class="pre">IOBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTest.remote_put_file" title="Link to this definition">¶</a></dt>
-<dd><p>Send a file to the remote system
-:type file: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IOBase</span></code></a></span>
-:param file: The file to upload.
-:type file: Path | IOBase
-:type dest: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>
-:param dest: The destination for the file.
-:type dest: str</p>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTestCase.remote_put_file">
+<span class="sig-name descname"><span class="pre">remote_put_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.13)"><span class="pre">IOBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTestCase.remote_put_file" title="Link to this definition">¶</a></dt>
+<dd><p>Send a file to the remote system</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>Path</em><em> | </em><em>IOBase</em>) – The file to upload.</p></li>
+<li><p><strong>dest</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – The destination for the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><em>fabric.transfer.Result</em> – If the connection is active and valid, the result of the file transfer.</p></li>
 <li><p><em>None</em> – If there is no remote connection.</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.13)"><strong>AssertionError</strong></a> – If the <cite>put</cite> on the remote connection fails for any reason.</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.13)"><strong>AssertionError</strong></a> – If the <cite>put</cite> on the remote connection fails for any reason.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTest.remote_run_cmd">
-<span class="sig-name descname"><span class="pre">remote_run_cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTest.remote_run_cmd" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTestCase.remote_run_cmd">
+<span class="sig-name descname"><span class="pre">remote_run_cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTestCase.remote_run_cmd" title="Link to this definition">¶</a></dt>
 <dd><p>Run a command on the remote system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -434,14 +434,14 @@ torn down after. (default: True)</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTest.assertRemoteConnected">
-<span class="sig-name descname"><span class="pre">assertRemoteConnected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTest.assertRemoteConnected" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTestCase.assertRemoteConnected">
+<span class="sig-name descname"><span class="pre">assertRemoteConnected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTestCase.assertRemoteConnected" title="Link to this definition">¶</a></dt>
 <dd><p>Assert that we are connected to the remote session</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTest.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTest.setUp" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTestCase.setUp" title="Link to this definition">¶</a></dt>
 <dd><p>Hook method for setting up the test fixture before exercising it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -451,8 +451,8 @@ torn down after. (default: True)</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTest.tearDown">
-<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTest.tearDown" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoRemoteTestCase.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoRemoteTestCase.tearDown" title="Link to this definition">¶</a></dt>
 <dd><p>Hook method for deconstructing the test fixture after testing it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -464,8 +464,8 @@ torn down after. (default: True)</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoSerialTest">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bakeneko.support.test.</span></span><span class="sig-name descname"><span class="pre">BakenekoSerialTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bakeneko.support.test.BakenekoSerialTest" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoSerialTestCase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bakeneko.support.test.</span></span><span class="sig-name descname"><span class="pre">BakenekoSerialTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'runTest'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoSerialTestCase" title="Link to this definition">¶</a></dt>
 <dd><p>Run <code class="xref py py-mod docutils literal notranslate"><span class="pre">unitest</span></code> based test cases that interact with a DUT over serial</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
@@ -487,9 +487,16 @@ torn down after. (default: True)</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoSerialTest.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoSerialTest.setUp" title="Link to this definition">¶</a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoSerialTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoSerialTestCase.setUp" title="Link to this definition">¶</a></dt>
+<dd><p>Hook that runs prior to a test running</p>
+<p>Checks the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">LONG_LIVED</span></code>, and if it is not set then
+it sets up the Serial connection to the remote DUT.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your test needs specialized setup code and you overload this make sure you call
+<cite>super().setUp()</cite>!</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
@@ -498,9 +505,16 @@ torn down after. (default: True)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoSerialTest.tearDown">
-<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoSerialTest.tearDown" title="Link to this definition">¶</a></dt>
-<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+<dt class="sig sig-object py" id="bakeneko.support.test.BakenekoSerialTestCase.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.BakenekoSerialTestCase.tearDown" title="Link to this definition">¶</a></dt>
+<dd><p>Hook that runs when a test is completed.</p>
+<p>Checks the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">LONG_LIVED</span></code>, and if it is not set then
+it cleans up the Serial connection to the remote DUT.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your test needs specialized teardown code and you overload this make sure you call
+<cite>super().tearDown()</cite>!</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
@@ -508,6 +522,13 @@ torn down after. (default: True)</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bakeneko.support.test.PCIeGatewareTestCase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bakeneko.support.test.</span></span><span class="sig-name descname"><span class="pre">PCIeGatewareTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#bakeneko.support.test.PCIeGatewareTestCase" title="Link to this definition">¶</a></dt>
+<dd><p>A specialization of the <a class="reference external" href="https://torii.shmdn.link/v0.8.1/testing/index.html#torii.test.ToriiTestCase" title="(in Torii v0.8.1.dev370+g72cc2d2fa)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torii.test.ToriiTestCase</span></code></a> for the Bakeneko PCIe gateware.</p>
+<p>It primarily provides helper asserts for various things related to PCIe traffic and symbols.</p>
 </dd></dl>
 
 </section>
@@ -574,19 +595,20 @@ torn down after. (default: True)</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Testing Infrastructure</a><ul>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTest"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTest</span></code></a><ul>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTest.remote_put_file"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTest.remote_put_file()</span></code></a></li>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTest.remote_run_cmd"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTest.remote_run_cmd()</span></code></a></li>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTest.assertRemoteConnected"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTest.assertRemoteConnected()</span></code></a></li>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTest.setUp"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTest.setUp()</span></code></a></li>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTest.tearDown"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTest.tearDown()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTestCase"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTestCase</span></code></a><ul>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTestCase.remote_put_file"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTestCase.remote_put_file()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTestCase.remote_run_cmd"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTestCase.remote_run_cmd()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTestCase.assertRemoteConnected"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTestCase.assertRemoteConnected()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTestCase.setUp"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTestCase.setUp()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoRemoteTestCase.tearDown"><code class="docutils literal notranslate"><span class="pre">BakenekoRemoteTestCase.tearDown()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoSerialTest"><code class="docutils literal notranslate"><span class="pre">BakenekoSerialTest</span></code></a><ul>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoSerialTest.setUp"><code class="docutils literal notranslate"><span class="pre">BakenekoSerialTest.setUp()</span></code></a></li>
-<li><a class="reference internal" href="#bakeneko.support.test.BakenekoSerialTest.tearDown"><code class="docutils literal notranslate"><span class="pre">BakenekoSerialTest.tearDown()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoSerialTestCase"><code class="docutils literal notranslate"><span class="pre">BakenekoSerialTestCase</span></code></a><ul>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoSerialTestCase.setUp"><code class="docutils literal notranslate"><span class="pre">BakenekoSerialTestCase.setUp()</span></code></a></li>
+<li><a class="reference internal" href="#bakeneko.support.test.BakenekoSerialTestCase.tearDown"><code class="docutils literal notranslate"><span class="pre">BakenekoSerialTestCase.tearDown()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#bakeneko.support.test.PCIeGatewareTestCase"><code class="docutils literal notranslate"><span class="pre">PCIeGatewareTestCase</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -598,7 +620,7 @@ torn down after. (default: True)</p>
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=d8cf7009"></script>
+</div><script src="../../_static/documentation_options.js?v=90813758"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
