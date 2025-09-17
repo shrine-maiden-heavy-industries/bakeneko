@@ -288,17 +288,41 @@ class BakenekoSerialTestCase(TestCase, metaclass = BakenekoSerialTestMeta):
 			return True
 		return False
 
-	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
+	def __init__(self, methodName: str = 'runTest', **kwargs) -> None:
+		super().__init__(methodName, **kwargs)
 
 		if self.LONG_LIVED:
 			self._setup_connection()
 
 	def setUp(self) -> None:
+		'''
+		Hook that runs prior to a test running
+
+		Checks the value of :py:attr:`LONG_LIVED`, and if it is not set then
+		it sets up the Serial connection to the remote DUT.
+
+		NOTE
+		----
+		If your test needs specialized setup code and you overload this make sure you call
+		`super().setUp()`!
+		'''
+
 		if not self.LONG_LIVED:
 			self._setup_connection()
 
 	def tearDown(self) -> None:
+		'''
+		Hook that runs when a test is completed.
+
+		Checks the value of :py:attr:`LONG_LIVED`, and if it is not set then
+		it cleans up the Serial connection to the remote DUT.
+
+		NOTE
+		----
+		If your test needs specialized teardown code and you overload this make sure you call
+		`super().tearDown()`!
+		'''
+
 		if not self.LONG_LIVED:
 			self._close_connection()
 
