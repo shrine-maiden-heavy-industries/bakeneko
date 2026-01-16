@@ -32,7 +32,7 @@ The two primary community spots for Bakeneko are the `#torii` IRC channel on [li
 
 Please do join and share your projects using , ask questions, get help with problems, or discuss Torii's development.
 
-We also maintain a list of [projects using ], so post it in the [show and tell] section of the [discussion forum] and we'll add it!
+We also maintain a list of [projects using Bakeneko], so post it in the [show and tell] section of the [discussion forum] and we'll add it!
 
 [Torii]: https://github.com/shrine-maiden-heavy-industries/torii-hdl
 [Introduction]: ./intro.md
@@ -40,5 +40,5 @@ We also maintain a list of [projects using ], so post it in the [show and tell] 
 [libera.chat]: https://libera.chat/
 [web chat]: https://web.libera.chat/#torii
 [discussion forum]: https://github.com/shrine-maiden-heavy-industries/bakeneko/discussions
-[projects using ]: ./projects.md
+[projects using Bakeneko]: ./projects.md
 [show and tell]: https://github.com/shrine-maiden-heavy-industries/bakeneko/discussions/categories/show-and-tell
