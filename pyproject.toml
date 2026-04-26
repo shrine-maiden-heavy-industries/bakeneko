@@ -12,7 +12,7 @@ readme = 'README.md'
 requires-python = '>=3.11'
 dependencies = [
 	'construct',
-	'torii>=0.8.0,<1.0',
+	'torii>=1.0.0a,<2.0',
 ]
 keywords = [
 	'Torii',
@@ -54,14 +54,14 @@ dev = [
 	'fabric',
 	'nox',
 	'pyserial',
-	'torii-boards>=0.8.1,<1.0', # NOTE(aki): For the Lattice ECP5-5G Versa board used in hw tests
+	'torii-boards>=1.0.0a,<2.0', # NOTE(aki): For the Lattice ECP5-5G Versa board used in hw tests
 	'torii-ila>=0.2.0,<1.0',
 	'torii-sim-wasm>=0.2.0,<1.0',
 ]
 
 examples = [
 	'pyserial',
-	'torii-boards>=0.8.1,<1.0', # NOTE(aki): For the Lattice ECP5-5G Versa board
+	'torii-boards>=1.0.0a,<2.0', # NOTE(aki): For the Lattice ECP5-5G Versa board
 ]
 
 [project.urls]

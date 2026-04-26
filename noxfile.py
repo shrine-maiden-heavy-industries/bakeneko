@@ -17,7 +17,6 @@ DIST_DIR  = BUILD_DIR / 'dist'
 
 IN_CI           = getenv('GITHUB_WORKSPACE') is not None
 ENABLE_COVERAGE = IN_CI or (getenv('BAKENEKO_TEST_COVERAGE') is not None)
-LOCAL_TORII_DIR = getenv('LOCAL_TORII_DIR')
 
 # Default sessions to run
 nox.options.sessions = (
@@ -68,20 +67,10 @@ def test(session: Session) -> None:
 
 	_setup_test_env()
 
-	# XXX(aki):
-	# Because we need some things in upstream Torii that are not released, ensure we are
-	# using the upstream Git HEAD, otherwise the local dev install will be used if not in CI
-	if IN_CI or LOCAL_TORII_DIR is None:
-		if LOCAL_TORII_DIR is None:
-			session.warn('Bakeneko uses some unreleased Torii features and bug fixes, and the')
-			session.warn('`LOCAL_TORII_DIR` environment variable was not set, falling back to Git')
-		session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
-	else:
-		if not Path(LOCAL_TORII_DIR).resolve().exists():
-			session.error('Environment variable `LOCAL_TORII_DIR` is set but does not exist!')
-		session.install('-e', LOCAL_TORII_DIR)
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
-	session.install('-e', '.[dev]')
 	if ENABLE_COVERAGE:
 		session.log('Coverage support enabled')
 		session.install('coverage')
@@ -107,7 +96,9 @@ def watch_docs(session: Session) -> None:
 
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
 	session.install('sphinx-autobuild')
-	session.install('-e', '.[dev]')
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
 	session.run('sphinx-autobuild', str(DOCS_DIR), str(OUTPUT_DIR))
 
@@ -116,7 +107,9 @@ def build_docs(session: Session) -> None:
 	OUTPUT_DIR = BUILD_DIR / 'docs'
 
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
-	session.install('-e', '.[dev]')
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
 	session.run('sphinx-build', '-b', 'html', str(DOCS_DIR), str(OUTPUT_DIR))
 
@@ -127,7 +120,9 @@ def build_docs_multiversion(session: Session) -> None:
 	redirect_index = (CNTRB_DIR / 'docs-redirect.html')
 
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
-	session.install('-e', '.[dev]')
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
 	# Workaround for sphinx-contrib/multiversion#58
 	# Ask git for the list of tags matching `v*`, and sort them in reverse order by name
@@ -224,7 +219,9 @@ def linkcheck_docs(session: Session) -> None:
 	OUTPUT_DIR = BUILD_DIR / 'docs-linkcheck'
 
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
-	session.install('-e', '.[dev]')
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
 	session.run('sphinx-build', '-b', 'linkcheck', str(DOCS_DIR), str(OUTPUT_DIR))
 
@@ -236,7 +233,9 @@ def typecheck_mypy(session: Session) -> None:
 	session.install('mypy')
 	session.install('lxml')
 	session.install('construct-typing')
-	session.install('-e', '.[dev]')
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
 	session.run(
 		'mypy', '--non-interactive', '--install-types', '--pretty',
@@ -251,7 +250,9 @@ def typecheck_pyright(session: Session) -> None:
 	OUTPUT_DIR.mkdir(parents = True, exist_ok = True)
 
 	session.install('pyright')
-	session.install('-e', '.[dev]')
+	# TODO(aki): Removed once we can rely on the Torii version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	session.install('--pre', '-e', '.[dev]')
 
 	with (OUTPUT_DIR / 'pyright.log').open('w') as f:
 		session.run('pyright', *session.posargs, stdout = f)
