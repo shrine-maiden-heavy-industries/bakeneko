@@ -69,6 +69,12 @@ def test(session: Session) -> None:
 
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+	# TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	if ENABLE_COVERAGE:
@@ -98,6 +104,12 @@ def watch_docs(session: Session) -> None:
 	session.install('sphinx-autobuild')
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+    # TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	session.run('sphinx-autobuild', str(DOCS_DIR), str(OUTPUT_DIR))
@@ -109,6 +121,12 @@ def build_docs(session: Session) -> None:
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+    # TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	session.run('sphinx-build', '-b', 'html', str(DOCS_DIR), str(OUTPUT_DIR))
@@ -122,6 +140,12 @@ def build_docs_multiversion(session: Session) -> None:
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+    # TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	# Workaround for sphinx-contrib/multiversion#58
@@ -221,6 +245,12 @@ def linkcheck_docs(session: Session) -> None:
 	session.install('-r', str(DOCS_DIR / 'requirements.txt'))
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+    # TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	session.run('sphinx-build', '-b', 'linkcheck', str(DOCS_DIR), str(OUTPUT_DIR))
@@ -235,6 +265,12 @@ def typecheck_mypy(session: Session) -> None:
 	session.install('construct-typing')
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+    # TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	session.run(
@@ -252,6 +288,12 @@ def typecheck_pyright(session: Session) -> None:
 	session.install('pyright')
 	# TODO(aki): Removed once we can rely on the Torii version in PyPi
 	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-hdl.git')
+    # TODO(aki): Removed once we can rely on the Torii boards version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-boards.git')
+    # TODO(aki): Removed once we can rely on the Torii ILA version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-ila.git')
+    # TODO(aki): Removed once we can rely on the Torii WASM sim version in PyPi
+	session.install('git+https://github.com/shrine-maiden-heavy-industries/torii-sim-wasm.git')
 	session.install('--pre', '-e', '.[dev]')
 
 	with (OUTPUT_DIR / 'pyright.log').open('w') as f:
