@@ -7,7 +7,8 @@ Torii platform resources.
 from typing            import TYPE_CHECKING
 from warnings          import warn
 
-from torii.build.dsl   import Attrs, DiffPairs, Pins, PinsN, Resource, ResourceConn, Subsignal
+from torii.build.dsl   import Attrs, Clock, DiffPairs, Pins, PinsN, Resource, ResourceConn, Subsignal
+from torii.hdl.time    import Frequency
 from torii.diagnostics import ResourceWarning
 
 __all__ = (
@@ -55,7 +56,7 @@ def PCIeBusResources(
 	wake_n: str | None = None, clkreq_n: str | None = None, pwrbrk_n: str | None = None, smbclk: str | None = None,
 	smbdat: str | None = None, tck: str | None = None, tdi: str | None = None, tdo: str | None = None,
 	tms: str | None = None, trst_n: str | None = None, conn: ResourceConn | None = None, attrs: Attrs = Attrs(),
-	refclk_attrs: Attrs = Attrs(), lane_attrs: Attrs = Attrs()
+	refclk_attrs: Attrs = Attrs(), refclk_freq: Frequency | None = None, lane_attrs: Attrs = Attrs()
 ) -> list[Resource]:
 	resources: list[Resource]  = []
 	io_common: list[Subsignal] = []
@@ -63,9 +64,15 @@ def PCIeBusResources(
 	io_common.append(Subsignal(
 		'perst', PinsN(perst_n, dir = 'i', conn = conn, assert_width = 1), attrs
 	))
-	io_common.append(Subsignal(
+
+	refclk_sig = Subsignal(
 		'refclk', DiffPairs(refclk_p, refclk_n, dir = 'i', conn = conn, assert_width = 1), refclk_attrs
-	))
+	)
+
+	if refclk_freq is not None:
+		refclk_sig.clock = Clock(refclk_freq)
+
+	io_common.append(refclk_sig)
 
 	jtag_sigs = (tck, tdi, tdo, tms, trst_n,) # type: ignore
 
