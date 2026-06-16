@@ -136,13 +136,6 @@ class DCU(Elaboratable):
 
 	'''
 
-	def _get_dcu_instance(self) -> Instance:
-		dcu = Instance(
-			'DCUA',
-		)
-
-		return dcu
-
 	def __init__(self, dcu: DCUNumber, channel: Channel) -> None:
 		self.dcu_num = dcu
 		self.chan    = channel
@@ -152,5 +145,9 @@ class DCU(Elaboratable):
 
 	def elaborate(self, platform: Platform | None) -> Module:
 		m = Module()
+
+		m.submodules.dcu = dcu = Instance(
+			'DCUA',
+		)
 
 		return m
