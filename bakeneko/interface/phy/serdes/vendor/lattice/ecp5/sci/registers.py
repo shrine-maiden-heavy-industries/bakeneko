@@ -11,6 +11,8 @@ __all__ = (
 	'CHRegister',
 )
 
+# TODO(aki): These should probably be turned into Torii CSRs
+
 @unique
 class DCURegister(IntEnum):
 	'''
