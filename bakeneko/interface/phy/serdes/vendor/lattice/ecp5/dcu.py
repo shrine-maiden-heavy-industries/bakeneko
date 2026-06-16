@@ -160,7 +160,7 @@ class DCU(Elaboratable):
 			o_D_SCIINT    = self.sci.sci_int,
 			i_D_SCIWSTN   = self.sci.sci_wrn,
 			i_D_SCIRD     = self.sci.sci_rd,
-			**{ f'i_D_SCIWDATA{bit}': self.sci.sci_wrdata[bit] for bit in range(8) },
+			**{ f'i_D_SCIWDATA{bit}': self.sci.sci_wdata[bit] for bit in range(8) },
 			**{ f'o_D_SCIRDATA{bit}': self.sci.sci_rdata[bit] for bit in range(8) },
 			**{ f'i_D_SCIADDR{bit}': self.sci.sci_addr[bit] for bit in range(6) },
 

@@ -39,9 +39,9 @@ class DCUInterface(Record):
 	''' SCI Write Strobe '''
 	sci_rd: Signal[1, Direction.FANIN]
 	''' SCI Read Strobe '''
-	sci_rddata: Signal[8, Direction.FANOUT]
+	sci_rdata: Signal[8, Direction.FANOUT]
 	''' Read port '''
-	sci_wrdata: Signal[8, Direction.FANIN]
+	sci_wdata: Signal[8, Direction.FANIN]
 	''' Write port '''
 	sci_addr: Signal[6, Direction.FANIN]
 	''' Register address '''
@@ -114,20 +114,20 @@ class SCI(Elaboratable):
 			self.interrupt.eq(Cat(self.dcu0.sci_int, self.dcu1.sci_int)),
 
 			# Hook up the DCU signals
-			self.dcu0.sci_wrdata.eq(self.sci_data_w),
+			self.dcu0.sci_wdata.eq(self.sci_data_w),
 			self.dcu0.sci_addr.eq(self.sci_addr),
-			self.dcu1.sci_wrdata.eq(self.sci_data_w),
+			self.dcu1.sci_wdata.eq(self.sci_data_w),
 			self.dcu1.sci_addr.eq(self.sci_addr),
 		]
 
 		# Depending on which DCU is selected connect to that DCU's output data bus
 		with m.If(self.dcu_sel):
 			m.d.comb += [
-				self.sci_data_r.eq(self.dcu1.sci_rddata),
+				self.sci_data_r.eq(self.dcu1.sci_rdata),
 			]
 		with m.Else():
 			m.d.comb += [
-				self.sci_data_r.eq(self.dcu0.sci_rddata),
+				self.sci_data_r.eq(self.dcu0.sci_rdata),
 			]
 
 		with m.FSM(domain = 'phy', name = 'DCU/SCI') as fsm:
