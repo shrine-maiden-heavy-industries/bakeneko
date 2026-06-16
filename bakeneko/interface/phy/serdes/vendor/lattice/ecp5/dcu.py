@@ -148,6 +148,20 @@ class DCU(Elaboratable):
 
 		m.submodules.dcu = dcu = Instance(
 			'DCUA',
+			src_loc    = None,
+			src_loc_at = 0,
+			# SerDes Client Interface
+			i_D_SCISELAUX = self.sci.sci_sel,
+			i_D_SCIENAUX  = self.sci.sci_en,
+			i_CH1_SCIEN   = self.sci.sci_en_ch,
+			i_CH1_SCISEL  = self.sci.sci_sel_ch,
+			i_D_SCIINT    = self.sci.sci_int,
+			i_D_SCIWSTN   = self.sci.sci_wrn,
+			i_D_SCIRD     = self.sci.sci_rd,
+			**{ f'i_D_SCIWDATA{bit}': self.sci.sci_wrdata[bit] for bit in range(8) },
+			**{ f'i_D_SCIRDATA{bit}': self.sci.sci_rdata[bit] for bit in range(8) },
+			**{ f'i_D_SCIADDR{bit}': self.sci.sci_addr[bit] for bit in range(6) },
+
 		)
 
 		return m
