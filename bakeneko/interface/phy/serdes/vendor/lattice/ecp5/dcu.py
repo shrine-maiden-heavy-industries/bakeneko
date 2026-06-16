@@ -153,8 +153,10 @@ class DCU(Elaboratable):
 			# SerDes Client Interface
 			i_D_SCISELAUX = self.sci.sci_sel,
 			i_D_SCIENAUX  = self.sci.sci_en,
-			i_CH1_SCIEN   = self.sci.sci_en_ch,
-			i_CH1_SCISEL  = self.sci.sci_sel_ch,
+			i_CH0_SCIEN   = self.sci.sci_en_ch0,
+			i_CH0_SCISEL  = self.sci.sci_sel_ch0,
+			i_CH1_SCIEN   = self.sci.sci_en_ch1,
+			i_CH1_SCISEL  = self.sci.sci_sel_ch1,
 			i_D_SCIINT    = self.sci.sci_int,
 			i_D_SCIWSTN   = self.sci.sci_wrn,
 			i_D_SCIRD     = self.sci.sci_rd,

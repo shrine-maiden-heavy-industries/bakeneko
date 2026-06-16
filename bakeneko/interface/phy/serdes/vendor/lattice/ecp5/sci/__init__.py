@@ -25,10 +25,14 @@ class DCUInterface(Record):
 	''' DCU Select '''
 	sci_en: Signal[1, Direction.FANIN]
 	''' DCU SCI enable '''
-	sci_en_ch: Signal[1, Direction.FANIN]
-	''' DCU Channel SCI enable '''
-	sci_sel_ch: Signal[1, Direction.FANIN]
-	''' DCU Channel select '''
+	sci_en_ch0: Signal[1, Direction.FANIN]
+	''' DCU Channel 0 SCI enable '''
+	sci_sel_ch0: Signal[1, Direction.FANIN]
+	''' DCU Channel 0 select '''
+	sci_en_ch1: Signal[1, Direction.FANIN]
+	''' DCU Channel 1 SCI enable '''
+	sci_sel_ch1: Signal[1, Direction.FANIN]
+	''' DCU Channel 1 select '''
 	sci_int: Signal[1, Direction.FANOUT]
 	''' SCI Interrupt '''
 	sci_wrn: Signal[1, Direction.FANIN]
