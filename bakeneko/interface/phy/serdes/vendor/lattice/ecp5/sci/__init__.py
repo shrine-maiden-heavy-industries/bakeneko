@@ -21,25 +21,25 @@ __all__ = (
 
 
 class DCUInterface(Record):
-	i_sci_sel: Signal[1, Direction.FANIN]
+	sci_sel: Signal[1, Direction.FANIN]
 	''' DCU Select '''
-	i_sci_en: Signal[1, Direction.FANIN]
+	sci_en: Signal[1, Direction.FANIN]
 	''' DCU SCI enable '''
-	i_sci_en_ch: Signal[1, Direction.FANIN]
+	sci_en_ch: Signal[1, Direction.FANIN]
 	''' DCU Channel SCI enable '''
-	i_sci_sel_ch: Signal[1, Direction.FANIN]
+	sci_sel_ch: Signal[1, Direction.FANIN]
 	''' DCU Channel select '''
-	o_sci_int: Signal[1, Direction.FANOUT]
+	sci_int: Signal[1, Direction.FANOUT]
 	''' SCI Interrupt '''
-	i_sci_wrn: Signal[1, Direction.FANIN]
+	sci_wrn: Signal[1, Direction.FANIN]
 	''' SCI Write Strobe '''
-	i_sci_rd: Signal[1, Direction.FANIN]
+	sci_rd: Signal[1, Direction.FANIN]
 	''' SCI Read Strobe '''
-	o_sci_rddata: Signal[8, Direction.FANOUT]
+	sci_rddata: Signal[8, Direction.FANOUT]
 	''' Read port '''
-	i_sci_wrdata: Signal[8, Direction.FANIN]
+	sci_wrdata: Signal[8, Direction.FANIN]
 	''' Write port '''
-	i_sci_addr: Signal[6, Direction.FANIN]
+	sci_addr: Signal[6, Direction.FANIN]
 	''' Register address '''
 
 
