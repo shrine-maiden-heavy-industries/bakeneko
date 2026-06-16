@@ -8,8 +8,9 @@ and it's channels.
 '''
 
 from torii.build.plat import Platform
-from torii.hdl.ast    import Signal
+from torii.hdl.ast    import Cat, Signal
 from torii.hdl.dsl    import Module
+from torii.hdl.rec    import Direction, Record
 from torii.hdl.ir     import Elaboratable
 
 from .registers       import CHRegister, DCURegister
@@ -19,25 +20,78 @@ __all__ = (
 )
 
 
+class DCUInterface(Record):
+	i_sci_sel: Signal[1, Direction.FANIN]
+	''' DCU Select '''
+	i_sci_en: Signal[1, Direction.FANIN]
+	''' DCU SCI enable '''
+	i_sci_en_ch: Signal[1, Direction.FANIN]
+	''' DCU Channel SCI enable '''
+	i_sci_sel_ch: Signal[1, Direction.FANIN]
+	''' DCU Channel select '''
+	o_sci_int: Signal[1, Direction.FANOUT]
+	''' SCI Interrupt '''
+	i_sci_wrn: Signal[1, Direction.FANIN]
+	''' SCI Write Strobe '''
+	i_sci_rd: Signal[1, Direction.FANIN]
+	''' SCI Read Strobe '''
+	o_sci_rddata: Signal[8, Direction.FANOUT]
+	''' Read port '''
+	i_sci_wrdata: Signal[8, Direction.FANIN]
+	''' Write port '''
+	i_sci_addr: Signal[6, Direction.FANIN]
+	''' Register address '''
+
+
 class SCI(Elaboratable):
 	'''
 	Simple interface to interact with the ECP5/ECP5G's SCI of a single DCU.
 
 	Attributes
 	----------
+	dcu_sel: Signal
+		Target DCU
 
+	ch_sel: Signal
+		Target DCU Channel
 
+	re: Signal
+		Read-enable
+
+	we: Signal
+		Write-enable
+
+	done: Signal
+		Transaction done
+
+	addr: Signal
+		6-bit SCI Register address
+
+	data_w: Signal
+		8-bit write data
+
+	data_r: Signal
+		8-bit read data
+
+	interrupt: Signal
+		The SCI interrupt signals
 	'''
 
 	def __init__(self) -> None:
-		self.dcu_sel = Signal()
-		self.ch_sel  = Signal()
-		self.re      = Signal()
-		self.we      = Signal()
-		self.done    = Signal()
-		self.addr    = Signal(6)
-		self.data_w  = Signal(8)
-		self.data_r  = Signal(8)
+		# Public interface
+		self.dcu_sel   = Signal()
+		self.ch_sel    = Signal()
+		self.re        = Signal()
+		self.we        = Signal()
+		self.done      = Signal()
+		self.addr      = Signal(6)
+		self.data_w    = Signal(8)
+		self.data_r    = Signal(8)
+		self.interrupt = Signal(2)
+
+		# DCU Interfaces
+		self.dcu0 = DCUInterface()
+		self.dcu1 = DCUInterface()
 
 		self.sci_rd     = Signal()
 		self.sci_wr_n   = Signal()
@@ -52,7 +106,25 @@ class SCI(Elaboratable):
 			self.sci_wr_n.eq(1),
 			self.sci_addr.eq(self.addr),
 			self.sci_data_w.eq(self.data_w),
+
+			self.interrupt.eq(Cat(self.dcu0.sci_int, self.dcu1.sci_int)),
+
+			# Hook up the DCU signals
+			self.dcu0.sci_wrdata.eq(self.sci_data_w),
+			self.dcu0.sci_addr.eq(self.sci_addr),
+			self.dcu1.sci_wrdata.eq(self.sci_data_w),
+			self.dcu1.sci_addr.eq(self.sci_addr),
 		]
+
+		# Depending on which DCU is selected connect to that DCU's output data bus
+		with m.If(self.dcu_sel):
+			m.d.comb += [
+				self.sci_data_r.eq(self.dcu1.sci_rddata),
+			]
+		with m.Else():
+			m.d.comb += [
+				self.sci_data_r.eq(self.dcu0.sci_rddata),
+			]
 
 		with m.FSM(domain = 'phy', name = 'DCU/SCI') as fsm:
 			m.d.comb += [ self.done.eq(fsm.ongoing('IDLE')), ]
