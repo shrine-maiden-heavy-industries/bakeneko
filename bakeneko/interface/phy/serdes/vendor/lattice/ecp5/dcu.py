@@ -10,6 +10,8 @@ from torii.build.plat import Platform
 from torii.hdl.dsl    import Module
 from torii.hdl.ir     import Elaboratable, Instance
 
+from .sci             import DCUInterface
+
 __all__ = (
 	'DCU',
 )
@@ -121,6 +123,17 @@ class DCU(Elaboratable):
 	channel: Channel
 		The specific channel or channels to use for the given DCU.
 
+	Attributes
+	----------
+	dcu_num: DCUNumber
+		The DCU on the device this module is configured for
+
+	chan: Channel
+		The DCU channel(s) this module is configured for
+
+	sci: DCUInterface
+		The SerDes Client Interface for this DCU.
+
 	'''
 
 	def _get_dcu_instance(self) -> Instance:
@@ -133,6 +146,9 @@ class DCU(Elaboratable):
 	def __init__(self, dcu: DCUNumber, channel: Channel) -> None:
 		self.dcu_num = dcu
 		self.chan    = channel
+
+		# DCU SerDes Client Interface
+		self.sci = DCUInterface()
 
 	def elaborate(self, platform: Platform | None) -> Module:
 		m = Module()
