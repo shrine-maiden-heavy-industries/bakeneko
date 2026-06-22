@@ -48,15 +48,9 @@ class DCUNumber(IntEnum):
 	''' The specific DCU to use '''
 
 	DCU0 = auto()
-	'''
-	Device DCU0, this is usually the leftmost DCU and is capable of sharing the input reference clock
-	and/or the bitclock with DCU1.
-	'''
+	''' The left-most DCU on devices with 2 DCUs '''
 	DCU1 = auto()
-	'''
-	Device DCU0, this is usually the rightmost DCU on the device, and is not capable of sharing the input
-	reference/bit clocks, it can however use them from DCU0
-	'''
+	''' The right-most DCU on devices with 2 DCUs '''
 
 	def __str__(self) -> str:
 		match self:
