@@ -55,10 +55,8 @@ class LinkSpeed(IntEnum):
 				return '64 GT/s'
 			case LinkSpeed.LS128_0:
 				return '128 GT/s'
-			case LinkSpeed.UNKNOWN:
-				return 'Unknown'
 			case _:
-				return 'INVALID'
+				return 'Unknown'
 
 	@staticmethod
 	def from_str(speed: str) -> 'LinkSpeed':
@@ -79,6 +77,25 @@ class LinkSpeed(IntEnum):
 				return LinkSpeed.LS128_0
 			case _:
 				return LinkSpeed.UNKNOWN
+
+	def __float__(self) -> float:
+		match self:
+			case LinkSpeed.LS2_5:
+				return 2.5
+			case LinkSpeed.LS5_0:
+				return 5.0
+			case LinkSpeed.LS8_0:
+				return 8.0
+			case LinkSpeed.LS16_0:
+				return 16.0
+			case LinkSpeed.LS32_0:
+				return 32.0
+			case LinkSpeed.LS64_0:
+				return 64.0
+			case LinkSpeed.LS128_0:
+				return 128.0
+			case _:
+				raise ValueError('Unable to convert unknown link speed to float')
 
 
 @unique
@@ -119,10 +136,8 @@ class LinkWidth(IntEnum):
 				return 'x16'
 			case LinkWidth.X32:
 				return 'x32'
-			case LinkWidth.UNKNOWN:
-				return 'Unknown'
 			case _:
-				return 'INVALID'
+				return 'Unknown'
 
 	@staticmethod
 	def from_str(width: str) -> 'LinkWidth':
@@ -143,6 +158,25 @@ class LinkWidth(IntEnum):
 				return LinkWidth.X32
 			case _:
 				return LinkWidth.UNKNOWN
+
+	def __int__(self) -> int:
+		match self:
+			case LinkWidth.X1:
+				return 1
+			case LinkWidth.X2:
+				return 2
+			case LinkWidth.X4:
+				return 4
+			case LinkWidth.X8:
+				return 8
+			case LinkWidth.X12:
+				return 12
+			case LinkWidth.X16:
+				return 16
+			case LinkWidth.X32:
+				return 32
+			case _:
+				raise ValueError('Unable to convert unknown link speed to int')
 
 @unique
 class PCIeStandard(IntEnum):
