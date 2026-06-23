@@ -566,6 +566,12 @@ class DCU(Elaboratable):
 	def elaborate(self, platform: Platform | None) -> Module:
 		m = Module()
 
+		# XXX(aki):
+		# There is a soft-reset bug in the ECP5 DCUs, see FPGA-PG-02001
+		# https://www.latticesemi.com/view_document?document_id=53318
+		# This only really effects the cores from the Lattice tools, but we should
+		# ensure that we don't fall into the same trap
+
 		m.submodules.dcu = dcu = Instance(
 			'DCUA',
 			src_loc    = None,
