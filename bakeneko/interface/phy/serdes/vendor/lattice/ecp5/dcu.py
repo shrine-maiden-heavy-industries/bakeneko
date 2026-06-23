@@ -4,14 +4,16 @@
 Lattice Semiconductor ECP5/ECP5-5G Dual-Channel Unit (DCU) Interface.
 '''
 
-from enum             import IntFlag, IntEnum, auto, unique
+from enum                   import IntFlag, IntEnum, auto, unique
+from typing                 import Literal
 
-from torii.build.plat import Platform
-from torii.hdl.ast    import Const, Signal
-from torii.hdl.dsl    import Module
-from torii.hdl.ir     import Elaboratable, Instance
+from torii.build.plat       import Platform
+from torii.hdl.ast          import Const, Signal
+from torii.hdl.dsl          import Module
+from torii.hdl.ir           import Elaboratable, Instance
 
-from .sci             import DCUInterface
+from .sci                   import DCUInterface
+from .......types.constants import LinkSpeed
 
 __all__ = (
 	'DCU',
@@ -118,6 +120,9 @@ class DCU(Elaboratable):
 	channel: Channel
 		The specific channel or channels to use for the given DCU.
 
+	link_speed: LinkSpeed
+		The link speed for the DCUs channels.
+
 	Attributes
 	----------
 	dcu_num: DCUNumber
@@ -131,9 +136,15 @@ class DCU(Elaboratable):
 
 	'''
 
-	def __init__(self, dcu: DCUNumber, channel: Channel) -> None:
+	def __init__(
+		self, dcu: DCUNumber, channel: Channel, link_speed: Literal[LinkSpeed.LS2_5, LinkSpeed.LS5_0]
+	) -> None:
+		# TODO(aki): Actually make this a viable diagnostic
+		assert link_speed in (LinkSpeed.LS2_5, LinkSpeed.LS2_5), 'Invalid Link Speed'
+
 		self.dcu_num = dcu
 		self.chan    = channel
+		self.speed   = link_speed
 
 		# DCU SerDes Client Interface
 		self.sci = DCUInterface()
