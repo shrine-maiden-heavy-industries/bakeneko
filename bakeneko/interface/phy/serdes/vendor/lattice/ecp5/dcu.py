@@ -123,6 +123,33 @@ class DCU(Elaboratable):
 	link_speed: LinkSpeed
 		The link speed for the DCUs channels.
 
+	refclk: Signal
+		The input reference clock for this DCU
+
+	tx0_p : Signal | None
+		The positive side of the channel 0 transmitter pair
+
+	tx0_n: Signal | None
+		The negative side of the channel 0 transmitter pair
+
+	rx0_p: Signal | None
+		The positive side of the channel 0 receiver pair
+
+	rx0_n: Signal | None
+		The negative side of the channel 0 receiver pair
+
+	tx1_p : Signal | None
+		The positive side of the channel 0 transmitter pair
+
+	tx1_n: Signal | None
+		The negative side of the channel 0 transmitter pair
+
+	rx1_p: Signal | None
+		The positive side of the channel 0 receiver pair
+
+	rx1_n: Signal | None
+		The negative side of the channel 0 receiver pair
+
 	Attributes
 	----------
 	dcu_num: DCUNumber
@@ -137,7 +164,12 @@ class DCU(Elaboratable):
 	'''
 
 	def __init__(
-		self, dcu: DCUNumber, channel: Channel, link_speed: Literal[LinkSpeed.LS2_5, LinkSpeed.LS5_0]
+		self, *, dcu: DCUNumber, channel: Channel, link_speed: Literal[LinkSpeed.LS2_5, LinkSpeed.LS5_0],
+		refclk: Signal,
+		tx0_p: Signal | None = None, tx0_n: Signal | None = None,
+		rx0_p: Signal | None = None, rx0_n: Signal | None = None,
+		tx1_p: Signal | None = None, tx1_n: Signal | None = None,
+		rx1_p: Signal | None = None, rx1_n: Signal | None = None,
 	) -> None:
 		# TODO(aki): Actually make this a viable diagnostic
 		assert link_speed in (LinkSpeed.LS2_5, LinkSpeed.LS2_5), 'Invalid Link Speed'
@@ -145,6 +177,13 @@ class DCU(Elaboratable):
 		self.dcu_num = dcu
 		self.chan    = channel
 		self.speed   = link_speed
+
+		# Validate to ensure we have the proper signals passed in
+		if Channel.CH0 in self.chan and not all((tx0_p, tx0_n, rx0_p, rx0_n)):
+			raise ValueError('Must specify channel 0 RX and TX signals when channel 0 is enabled')
+
+		if Channel.CH1 in self.chan and not all((tx1_p, tx1_n, rx1_p, rx1_n)):
+			raise ValueError('Must specify channel 1 RX and TX signals when channel 1 is enabled')
 
 		# DCU SerDes Client Interface
 		self.sci = DCUInterface()
