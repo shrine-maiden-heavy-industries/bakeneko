@@ -1,0 +1,91 @@
+{
+  "api/devices/index": [],
+  "api/index": [],
+  "api/interface/index": [],
+  "api/interface/phy/gateware/index": [],
+  "api/interface/phy/gateware/phy": [],
+  "api/interface/phy/gateware/receiver": [],
+  "api/interface/phy/gateware/transmitter": [],
+  "api/interface/phy/index": [],
+  "api/interface/phy/serdes/index": [],
+  "api/interface/phy/serdes/lattice/ecp5/dcu": [
+    {
+      "source": "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502    DCU    \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 CH0 \u2502 CH1 \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u256f",
+      "names": [],
+      "example": {
+        "document": "api/interface/phy/serdes/lattice/ecp5/dcu",
+        "ref_id": "module-bakeneko.interface.phy.serdes.vendor.lattice.ecp5.dcu",
+        "headings": [
+          "DCU"
+        ]
+      },
+      "doc_lineno": 9
+    },
+    {
+      "source": "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502              DCU              \u2502\n\u2502 \u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e \u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e \u256d\u2500\u2500\u2500\u256e \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u2502 A \u2502 \u2502\n\u2502 \u2502   CH0   \u2502 \u2502   CH1   \u2502 \u2502 U \u2502 \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u2502 X \u2502 \u2502\n\u2502 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u2570\u2500\u2500\u2500\u256f \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u256d\u2500\u2500\u2500\u256e \u2502\n\u2502 \u2502   PCS   \u2502 \u2502   PCS   \u2502 \u2502 E \u2502 \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u2502 X \u2502 \u2502\n\u2502 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u2502 T \u2502 \u2502\n\u2502 \u2502 SERDES0 \u2502 \u2502 SERDES1 \u2502 \u2502 R \u2502 \u2502\n\u2502 \u251c\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2524 \u2502 E \u2502 \u2502\n\u2502 \u2502 RX \u2502 TX \u2502 \u2502 RX \u2502 TX \u2502 \u2502 F \u2502 \u2502\n\u2502 \u2570\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u256f \u2570\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u256f \u2570\u2500\u2500\u2500\u256f \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f",
+      "names": [],
+      "example": {
+        "document": "api/interface/phy/serdes/lattice/ecp5/dcu",
+        "ref_id": "module-bakeneko.interface.phy.serdes.vendor.lattice.ecp5.dcu",
+        "headings": [
+          "DCU"
+        ]
+      },
+      "doc_lineno": 22
+    }
+  ],
+  "api/interface/phy/serdes/lattice/ecp5/index": [
+    {
+      "source": "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502    DCU    \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 CH0 \u2502 CH1 \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u256f",
+      "names": [],
+      "example": {
+        "document": "api/interface/phy/serdes/lattice/ecp5/index",
+        "ref_id": "ecp5-serdes",
+        "headings": [
+          "ECP5 SerDes"
+        ]
+      },
+      "doc_lineno": 9
+    },
+    {
+      "source": "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502              DCU              \u2502\n\u2502 \u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e \u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e \u256d\u2500\u2500\u2500\u256e \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u2502 A \u2502 \u2502\n\u2502 \u2502   CH0   \u2502 \u2502   CH1   \u2502 \u2502 U \u2502 \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u2502 X \u2502 \u2502\n\u2502 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u2570\u2500\u2500\u2500\u256f \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u256d\u2500\u2500\u2500\u256e \u2502\n\u2502 \u2502   PCS   \u2502 \u2502   PCS   \u2502 \u2502 E \u2502 \u2502\n\u2502 \u2502         \u2502 \u2502         \u2502 \u2502 X \u2502 \u2502\n\u2502 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u2502 T \u2502 \u2502\n\u2502 \u2502 SERDES0 \u2502 \u2502 SERDES1 \u2502 \u2502 R \u2502 \u2502\n\u2502 \u251c\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2524 \u2502 E \u2502 \u2502\n\u2502 \u2502 RX \u2502 TX \u2502 \u2502 RX \u2502 TX \u2502 \u2502 F \u2502 \u2502\n\u2502 \u2570\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u256f \u2570\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u256f \u2570\u2500\u2500\u2500\u256f \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f",
+      "names": [],
+      "example": {
+        "document": "api/interface/phy/serdes/lattice/ecp5/index",
+        "ref_id": "ecp5-serdes",
+        "headings": [
+          "ECP5 SerDes"
+        ]
+      },
+      "doc_lineno": 22
+    }
+  ],
+  "api/interface/phy/serdes/lattice/ecp5/pipe": [],
+  "api/interface/phy/serdes/lattice/ecp5/sci": [],
+  "api/interface/phy/serdes/lattice/index": [],
+  "api/interface/phy/serdes/xilinx/index": [],
+  "api/interface/pipe": [],
+  "api/link/index": [],
+  "api/physical/coding": [],
+  "api/physical/index": [],
+  "api/protocol/index": [],
+  "api/support/index": [],
+  "api/support/resources": [],
+  "api/support/sys_dev": [],
+  "api/support/test": [],
+  "api/types/configuration/capability": [],
+  "api/types/configuration/index": [],
+  "api/types/configuration/registers/index": [],
+  "api/types/configuration/registers/pci_compatible": [],
+  "api/types/constants": [],
+  "api/types/errors": [],
+  "api/types/index": [],
+  "changelog": [],
+  "getting_started": [],
+  "index": [],
+  "install": [],
+  "intro": [],
+  "license": [],
+  "projects": [],
+  "tutorials/index": []
+}
