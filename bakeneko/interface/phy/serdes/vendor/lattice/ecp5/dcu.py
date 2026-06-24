@@ -148,20 +148,43 @@ class DCU(Elaboratable):
 
 		# DCU SerDes Client Interface
 		self.sci = DCUInterface()
+		# SCI Write data   # i_D_SCIWDATA0-i_D_SCIWDATA7
+		# SCI Address      # i_D_SCIADDR0-i_D_SCIADDR5
+		# SCI Read data    # o_D_SCIRDATA0-o_D_SCIRDATA7
+		# SCI en-aux       # i_D_SCIENAUX
+		# SCI sel-aux      # i_D_SCISELAUX
+		# SCI en-ch0       # i_D_SCIEN
+		# SCI sel-ch0      # i_D_SCISEL
+		# SCI Read strobe  # i_D_SCIRD
+		# SCI Write strobe # i_D_SCIWSTN
+		# SCI Interrupt    # o_D_SCIINT
 
-		# DCU Power
+		# DCU
+		self.p_bus8bit_sel        = Const(0)   # 8-bit/10-bit bus selection # p_D_BUS8BIT_SEL: "DONTCARE" "0b0" "0b1"
+		self.p_dco_calib_time_sel = Const(0)   # DCO stablization delay in cycles (24;26;28;210)                   # p_D_DCO_CALIB_TIME_SEL: "DONTCARE" "0b00"-"0b11"
+		self.p_isetlos            = Const(0)   # Ios Curren setting                                                # p_D_ISETLOS: "DONTCARE" "0d0"-"0d255"
+		self.p_pd_iset            = Const(0)   # PD current setting (100%;-15%;-30%;+20%)                          # p_D_PD_ISET: "DONTCARE" "0b00"-"0b11"
+		self.p_req_iset           = Const(0)   # Equalizer tail current (100%;-12%;-20%;-28%;+14%;+33%;+60%;+100%) # p_D_REQ_ISET: "DONTCARE" "0b000"-"0b111"
+		self.p_seticonst_aux      = Const(0)   # Constant current reference (50uA;60uA;65uA;45uA)                  # p_D_SETICONST_AUX: "DONTCARE" "0b00"-"0b11"
+		self.p_seticonst_ch       = Const(0)   # Constant current reference (50uA;60uA;65uA;45uA)                  # p_D_SETICONST_CH: "DONTCARE" "0b00"-"0b11"
+		self.p_setirpoly_aux      = Const(0)   # Poly current reference (50uA;60uA;65uA;45uA)                      # p_D_SETIRPOLY_AUX: "DONTCARE" "0b00"-"0b11"
+		self.p_setirpoly_ch       = Const(0)   # Poly current reference (50uA;60uA;65uA;45uA)                      # p_D_SETIRPOLY_CH: "DONTCARE" "0b00"-"0b11"
+		self.p_xge_mode           = '0b0'      # 10Gb Ethernet mode # p_D_XGE_MODE: "DONTCARE" "0b0" "0b1"
+
+		# DCU - Power
 		self.i_ffc_macropdb = Const(1) # Global macrocell power-down control (DCU + Aux + PLL)  # i_D_FFC_MACROPDB
 		self.p_ib_pwdnb     = '0b1'    # RX power-down control                                  # p_D_IB_PWDNB: "DONTCARE" "0b0" "0b1"
 		self.p_macropdb     = '0b1'    # Default macrocell power-down (DCU + Aux + PLL)         # p_D_MACROPDB: "DONTCARE" "0b0" "0b1"
 		self.p_txpll_pwdnb  = '0b1'    # Default TX PLL power down control                      # p_D_TXPLL_PWDNB: "DONTCARE" "0b0" "0b1"
 
-		# DCU Reset
-		self.i_ffc_dual_rst  = Signal() # Global DCU reset           # i_D_FFC_DUAL_RST
-		self.i_ffc_macro_rst = Signal() # DCU macrocell reset?       # i_D_FFC_MACRO_RST
-		self.i_ffc_trst      = Signal() # TX PLL Loss-of-Lock reset? # i_D_FFC_TRST
-		self.i_scan_reset    = Signal() # Boundary-scan reset?       # i_D_SCAN_RESET
+		# DCU - Reset
+		self.i_ffc_dual_rst    = Signal() # Async Global DCU reset                                   # i_D_FFC_DUAL_RST
+		self.i_ffc_macro_rst   = Signal() # Async DCU macrocell reset (gated by `FPGA_RESET_ENABLE`) # i_D_FFC_MACRO_RST
+		self.i_ffc_sync_toggle = Signal() # Serializer reset (rising-edge)                           # i_D_FFC_SYNC_TOGGLE
+		self.i_ffc_trst        = Signal() # Global DCU TX digital/PLL logic reset                    # i_D_FFC_TRST
+		self.i_scan_reset      = Signal() # Boundary-scan reset?                                     # i_D_SCAN_RESET
 
-		# DCU Clocking
+		# DCU - Clocking
 		self.i_refclki            = Signal()           # DCU Input Reference clock                              # i_D_REFCLKI
 		self.i_sync_nd            = Signal()           # Sync to/from neighbor DCU? (undocumented)              # i_D_SYNC_ND
 		self.i_txbit_clkn_from_nd = Signal()           # TX bitclk_n from neighbor DCU? (undocumented)          # i_D_TXBIT_CLKN_FROM_ND
@@ -196,38 +219,35 @@ class DCU(Elaboratable):
 		self.p_sync_nd_en         = Const(0)           # Enable TX sync buffer to neighbor DCU TX channels      # p_D_SYNC_ND_EN: "DONTCARE" "0b0" "0b1"
 		self.p_tx_max_rate        = f'{self.speed:1f}' # Max transmit datarate                                  # p_D_TX_MAX_RATE: "DONTCARE" "0.27"-"5"
 		self.p_tx_vco_ck_div      = '0b000'            # TX VCO Diviser (1)                                     # p_D_TX_VCO_CK_DIV: "DONTCARE" "0b000"-"0b111"
-
 		# DCU - FIFO
 		self.p_high_mark          = '0d4'        # Clock-compensation FIFO high watermark # p_D_HIGH_MARK: "DONTCARE" "0d0"-"0d15"
 		self.p_low_mark           = '0d12'       # Clock-compensation FIFO low watermark  # p_D_LOW_MARK: "DONTCARE" "0d0"-"0d15"
 
 		# DCU - Unknown
-		self.i_cin                = Signal(12) # # i_D_CIN0-i_D_CIN11
-		self.i_cyawstn            = Signal()   # # i_D_CYAWSTN
-		self.i_ffc_sync_toggle    = Signal()   # # i_D_FFC_SYNC_TOGGLE
-		self.i_scan_enable        = Signal()   # # i_D_SCAN_ENABLE
-		self.i_scan_in            = Signal(8)  # # i_D_SCAN_IN_0-i_D_SCAN_IN_7
-		self.i_scan_mode          = Signal()   # # i_D_SCAN_MODE
-		self.o_cout               = Signal(20) # # o_D_COUT0-o_D_COUT19
-		self.o_scan_out           = Signal(8)  # # o_D_SCAN_OUT_0-o_D_SCAN_OUT_7
-		self.p_bus8bit_sel        = Const(0)   # 8-bit/10-bit bus selection # p_D_BUS8BIT_SEL: "DONTCARE" "0b0" "0b1"
-
-		# DCU - Analog
-		self.p_dco_calib_time_sel = Const(0)   # DCO stablization delay in cycles (24;26;28;210)                   # p_D_DCO_CALIB_TIME_SEL: "DONTCARE" "0b00"-"0b11"
-		self.p_isetlos            = Const(0)   # Ios Curren setting                                                # p_D_ISETLOS: "DONTCARE" "0d0"-"0d255"
-		self.p_pd_iset            = Const(0)   # PD current setting (100%;-15%;-30%;+20%)                          # p_D_PD_ISET: "DONTCARE" "0b00"-"0b11"
-		self.p_req_iset           = Const(0)   # Equalizer tail current (100%;-12%;-20%;-28%;+14%;+33%;+60%;+100%) # p_D_REQ_ISET: "DONTCARE" "0b000"-"0b111"
-		self.p_seticonst_aux      = Const(0)   # Constant current reference (50uA;60uA;65uA;45uA)                  # p_D_SETICONST_AUX: "DONTCARE" "0b00"-"0b11"
-		self.p_seticonst_ch       = Const(0)   # Constant current reference (50uA;60uA;65uA;45uA)                  # p_D_SETICONST_CH: "DONTCARE" "0b00"-"0b11"
-		self.p_setirpoly_aux      = Const(0)   # Poly current reference (50uA;60uA;65uA;45uA)                      # p_D_SETIRPOLY_AUX: "DONTCARE" "0b00"-"0b11"
-		self.p_setirpoly_ch       = Const(0)   # Poly current reference (50uA;60uA;65uA;45uA)                      # p_D_SETIRPOLY_CH: "DONTCARE" "0b00"-"0b11"
-
-		# DCU - Unused
-		self.p_xge_mode           = '0b0'   # 10Gb Ethernet mode # p_D_XGE_MODE: "DONTCARE" "0b0" "0b1"
+		self.i_cin                = Signal(12) # Undocumented "test" # i_D_CIN0-i_D_CIN11
+		self.i_cyawstn            = Signal()   # Undocumented "test" # i_D_CYAWSTN
+		self.i_scan_enable        = Signal()   # Undocumented "test" # i_D_SCAN_ENABLE
+		self.i_scan_in            = Signal(8)  # Undocumented "test" # i_D_SCAN_IN_0-i_D_SCAN_IN_7
+		self.i_scan_mode          = Signal()   # Undocumented "test" # i_D_SCAN_MODE
+		self.o_cout               = Signal(20) # Undocumented "test" # o_D_COUT0-o_D_COUT19
+		self.o_scan_out           = Signal(8)  # Undocumented "test" # o_D_SCAN_OUT_0-o_D_SCAN_OUT_7
 
 		# DCU Channel 0
+		self.i_ch0_ffc_ei_en          = Signal()   # Force rransciver electrical idle control                   # i_CH0_FFC_EI_EN
+		self.i_ch0_ffc_enable_cgalign = Signal()   # Enable transciver comma aligner                            # i_CH0_FFC_ENABLE_CGALIGN
+		self.i_ch0_ffc_fb_loopback    = Signal()   # FPGA bridge RX-TX loopback                                 # i_CH0_FFC_FB_LOOPBACK
+		self.i_ch0_ffc_pcie_ct        = Signal()   # Request treansciver to do far-side PCIe receiver detection # i_CH0_FFC_PCIE_CT
+		self.i_ch0_ffc_pcie_det_en    = Signal()   # Enable transciver PCIe receiver detection                  # i_CH0_FFC_PCIE_DET_EN
+		self.i_ch0_ffc_pfifo_clr      = Signal()   # Clear SerDes bridge RX-TX parallel loopback FIFO           # i_CH0_FFC_PFIFO_CLR
+		self.i_ch0_ffc_sb_pfifo_lp    = Signal()   # SerDes bridge RX-TX parallel loopback                      # i_CH0_FFC_SB_PFIFO_LP
+		self.i_ch0_ffc_signal_detect  = Signal()   # Signal detected                                            # i_CH0_FFC_SIGNAL_DETECT
 		self.i_ch0_hdinn              = Signal()   #                                                            # i_CH0_HDINN
 		self.i_ch0_hdinp              = Signal()   #                                                            # i_CH0_HDINP
+		self.o_ch0_ffs_ls_sync_status = Signal()   # Comma syncronization status                                # o_CH0_FFS_LS_SYNC_STATUS
+		self.o_ch0_ffs_pcie_con       = Signal()   # Result of far-end PCIe receivver detection                 # o_CH0_FFS_PCIE_CON
+		self.o_ch0_ffs_pcie_done      = Signal()   # Far-end PCIe recevier detection completed                  # o_CH0_FFS_PCIE_DONE
+		self.o_ch0_ffs_skp_added      = Signal()   # Transicver CTC added a `SKP` character                     # o_CH0_FFS_SKP_ADDED
+		self.o_ch0_ffs_skp_deleted    = Signal()   # Transciver CTC removed a `SKP` character                   # o_CH0_FFS_SKP_DELETED
 		self.o_ch0_hdoutn             = Signal()   #                                                            # o_CH0_HDOUTN
 		self.o_ch0_hdoutp             = Signal()   #                                                            # o_CH0_HDOUTP
 		self.p_ch0_auto_calib_en      = Const(0)   # (DCO?) Slow calibraiton - Full                             # p_CH0_AUTO_CALIB_EN: "DONTCARE" "0b0" "0b1"
@@ -261,6 +281,7 @@ class DCU(Elaboratable):
 		self.p_ch0_dec_bypass         = Const(0)   # Bypass channel 8b10b decoder                               # p_CH0_DEC_BYPASS: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_enable_cg_align    = Const(0)   # Continuous comma alignment (only if `UC_MODE` is enabled)  # p_CH0_ENABLE_CG_ALIGN: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_enc_bypass         = Const(0)   # Bypass channel 8b10b endocer                               # p_CH0_ENC_BYPASS: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_ge_an_enable       = Const(0)   # Gigabit Ethernet auto negotiation                          # p_CH0_GE_AN_ENABLE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_lsm_disable        = Const(0)   # Disable RX link state machine                              # p_CH0_LSM_DISABLE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_match_2_enable     = Const(0)   # Enable 2-character skip match (`CC_MATCH[4:3]`)            # p_CH0_MATCH_2_ENABLE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_match_4_enable     = Const(0)   # Enable 4-character skip match (`CC_MATCH[4:1]`)            # p_CH0_MATCH_4_ENABLE: "DONTCARE" "0b0" "0b1"
@@ -272,6 +293,7 @@ class DCU(Elaboratable):
 		self.p_ch0_prbs_enable        = Const(0)   #                                                            # p_CH0_PRBS_ENABLE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_prbs_lock          = Const(0)   #                                                            # p_CH0_PRBS_LOCK: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_prbs_selection     = Const(0)   #                                                            # p_CH0_PRBS_SELECTION: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_protocol           = Const(0)   # Channel protocol                                           # p_CH0_PROTOCOL: "DONTCARE" "PCIE" "GBE" "SGMII" "XAUI" "SDI" "CPRI" "JESD204" "EDP" "G8B10B" "8BSER" "10BSER"
 		self.p_ch0_reg_band_offset    = Const(0)   # DCO band offset control                                    # p_CH0_REG_BAND_OFFSET: "DONTCARE" "0d0"-"0d15"
 		self.p_ch0_reg_band_sel       = Const(0)   # DCO bad selection (0-63 when `AUTO_CALIB_EN`)              # p_CH0_REG_BAND_SEL: "DONTCARE" "0d0"-"0d63"
 		self.p_ch0_reg_idac_en        = Const(0)   # Manual current DAC enable                                  # p_CH0_REG_IDAC_EN: "DONTCARE" "0b0" "0b1"
@@ -285,26 +307,21 @@ class DCU(Elaboratable):
 		self.p_ch0_udf_comma_mask     = Const(0)   #                                                            # p_CH0_UDF_COMMA_MASK: "DONTCARE" "0x000"-"0x3ff"
 		self.p_ch0_wa_bypass          = Const(0)   # Bypass word aligner                                        # p_CH0_WA_BYPASS: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_wa_mode            = Const(0)   # Barell-shifter or Bitslip alignment mode                   # p_CH0_WA_MODE: "DONTCARE" "0b0" "0b1"
-		self.i_ch0_ffc_ei_en          = Signal()   # Force rransciver electrical idle control                   # i_CH0_FFC_EI_EN
-		self.i_ch0_ffc_pcie_det_en    = Signal()   # Enable transciver PCIe receiver detection                  # i_CH0_FFC_PCIE_DET_EN
-		self.i_ch0_ffc_pcie_ct        = Signal()   # Request treansciver to do far-side PCIe receiver detection # i_CH0_FFC_PCIE_CT
-		self.i_ch0_ffc_enable_cgalign = Signal()   # Enable transciver comma aligner                            # i_CH0_FFC_ENABLE_CGALIGN
-		self.i_ch0_ffc_signal_detect  = Signal()   # Signal detected                                            # i_CH0_FFC_SIGNAL_DETECT
 
 		# DCU Channle 0 - TX
 		self.i_ch0_ff_tx_d            = Signal(24) # TX FIFO Data                                                                                                                   # i_CH0_FF_TX_D_0-i_CH0_FF_TX_D_23
 		self.i_ch0_ff_txi_clk         = Signal()   # TX Rerfernce clock input from FPGA fabric                                                                                      # i_CH0_FF_TXI_CLK
-		self.i_ch0_ffc_div11_mode_tx  = Signal()   #                                                                                                                                # i_CH0_FFC_DIV11_MODE_TX
-		self.i_ch0_ffc_lane_tx_rst    = Signal()   #                                                                                                                                # i_CH0_FFC_LANE_TX_RST
-		self.i_ch0_ffc_ldr_core2tx_en = Signal()   #                                                                                                                                # i_CH0_FFC_LDR_CORE2TX_EN
+		self.i_ch0_ffc_div11_mode_tx  = Signal()   # Enable DIV/11 TX rate                                                                                                          # i_CH0_FFC_DIV11_MODE_TX
+		self.i_ch0_ffc_lane_tx_rst    = Signal()   # Async reset for DCU TX logic only                                                                                              # i_CH0_FFC_LANE_TX_RST
+		self.i_ch0_ffc_ldr_core2tx_en = Signal()   # Enable low-data-rate TX serial path                                                                                            # i_CH0_FFC_LDR_CORE2TX_EN
 		self.i_ch0_ffc_rate_mode_tx   = Signal()   # TX data-rate div/2                                                                                                             # i_CH0_FFC_RATE_MODE_TX
 		self.i_ch0_ffc_tx_gear_mode   = Signal()   # 2:1 TX gearing mode                                                                                                            # i_CH0_FFC_TX_GEAR_MODE
-		self.i_ch0_ffc_txpwdnb        = Signal()   #                                                                                                                                # i_CH0_FFC_TXPWDNB
-		self.i_ch0_ldr_core2tx        = Signal()   #                                                                                                                                # i_CH0_LDR_CORE2TX
+		self.i_ch0_ffc_txpwdnb        = Signal()   # TX power-down                                                                                                                  # i_CH0_FFC_TXPWDNB
+		self.i_ch0_ldr_core2tx        = Signal()   # Single-ended low-data-rate input from FPGA fabric to TX                                                                        # i_CH0_LDR_CORE2TX
 		self.o_ch0_ff_tx_f_clk        = Signal()   # TX clock                                                                                                                       # o_CH0_FF_TX_F_CLK
 		self.o_ch0_ff_tx_h_clk        = Signal()   # DIV/2 TX clock                                                                                                                 # o_CH0_FF_TX_H_CLK
 		self.o_ch0_ff_tx_pclk         = Signal()   # Primary TX clock (DIV/2 when 2:1 gearing)                                                                                      # o_CH0_FF_TX_PCLK
-		self.o_ch0_ffs_txfbfifo_error = Signal()   #                                                                                                                                # o_CH0_FFS_TXFBFIFO_ERROR
+		self.o_ch0_ffs_txfbfifo_error = Signal()   # TX FPGA bridge FIFO error                                                                                                      # o_CH0_FFS_TXFBFIFO_ERROR
 		self.p_ch0_ff_tx_f_clk_dis    = Const(0)   # Disable `FF_TX_F_CLK`                                                                                                          # p_CH0_FF_TX_F_CLK_DIS: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_ff_tx_h_clk_en     = Const(0)   # Enable `FF_TX_H_CLK`                                                                                                           # p_CH0_FF_TX_H_CLK_EN: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_invert_tx          = Const(0)   # Invert channel TX P/N IO pair                                                                                                  # p_CH0_INVERT_TX: "DONTCARE" "0b0" "0b1"
@@ -338,19 +355,27 @@ class DCU(Elaboratable):
 		self.p_ch0_txdepre            = Const(0)   #                                                                                                                                # p_CH0_TXDEPRE: "DONTCARE" "0d0"-"0d9"
 
 		# DCU Channel 0 - RX
+		self.i_ch0_ff_ebrd_clk        = Signal()   # RX CTC FIFO clock from FPGA fabric                              # i_CH0_FF_EBRD_CLK
 		self.i_ch0_ff_rxi_clk         = Signal()   # RX Reference clock input from FPGA fabric                       # i_CH0_FF_RXI_CLK
-		self.i_ch0_ffc_div11_mode_rx  = Signal()   #                                                                 # i_CH0_FFC_DIV11_MODE_RX
-		self.i_ch0_ffc_lane_rx_rst    = Signal()   #                                                                 # i_CH0_FFC_LANE_RX_RST
+		self.i_ch0_ffc_cdr_en_bitslip = Signal()   # Enable CDR bitlip? (undocumented)                               # i_CH0_FFC_CDR_EN_BITSLIP
+		self.i_ch0_ffc_div11_mode_rx  = Signal()   # Enable DIV/11 RX rate                                           # i_CH0_FFC_DIV11_MODE_RX
+		self.i_ch0_ffc_lane_rx_rst    = Signal()   # Async reset for DCU RX logic only                               # i_CH0_FFC_LANE_RX_RST
 		self.i_ch0_ffc_rate_mode_rx   = Signal()   # RX data-rate div/2                                              # i_CH0_FFC_RATE_MODE_RX
+		self.i_ch0_ffc_rrst           = Signal()   # RX Digital logic reset                                          # i_CH0_FFC_RRST
 		self.i_ch0_ffc_rx_gear_mode   = Signal()   # RX 2:1 gearing mode                                             # i_CH0_FFC_RX_GEAR_MODE
-		self.i_ch0_ffc_rxpwdnb        = Signal()   #                                                                 # i_CH0_FFC_RXPWDNB
+		self.i_ch0_ffc_rxpwdnb        = Signal()   # RX power-down                                                   # i_CH0_FFC_RXPWDNB
+		self.i_ch0_ffc_sb_inv_rx      = Signal()   # Invert recieived data                                           # i_CH0_FFC_SB_INV_RX
 		self.i_ch0_rx_refclk          = Signal()   # RX CDR Reference clock input                                    # i_CH0_RX_REFCLK
 		self.o_ch0_ff_rx_d            = Signal(24) # RX FIFO data                                                    # o_CH0_FF_RX_D_0-o_CH0_FF_RX_D_23
 		self.o_ch0_ff_rx_f_clk        = Signal()   # Recovered clock from RX CDR                                     # o_CH0_FF_RX_F_CLK
 		self.o_ch0_ff_rx_h_clk        = Signal()   # DIV/2 recovered clock from RX CDR                               # o_CH0_FF_RX_H_CLK
 		self.o_ch0_ff_rx_pclk         = Signal()   # Recovered RX primary clock (DIV/2 when 2:1 gearing)             # o_CH0_FF_RX_PCLK
-		self.o_ch0_ffs_rxfbfifo_error = Signal()   #                                                                 # o_CH0_FFS_RXFBFIFO_ERROR
-		self.o_ch0_ldr_rx2core        = Signal()   #                                                                 # o_CH0_LDR_RX2CORE
+		self.o_ch0_ffs_cc_overrun     = Signal()   # RX Clock compensator FIFO overrun error                         # o_CH0_FFS_CC_OVERRUN
+		self.o_ch0_ffs_cc_underrun    = Signal()   # RX Clock compensator FIFO underrun error                        # o_CH0_FFS_CC_UNDERRUN
+		self.o_ch0_ffs_rlol           = Signal()   # RX CDR loss-of-lock                                             # o_CH0_FFS_RLOL
+		self.o_ch0_ffs_rlos           = Signal()   # RX Loss-of-signal                                               # o_CH0_FFS_RLOS
+		self.o_ch0_ffs_rxfbfifo_error = Signal()   # RX FPBA bridge FIFO error                                       # o_CH0_FFS_RXFBFIFO_ERROR
+		self.o_ch0_ldr_rx2core        = Signal()   # Single-ended low-data-rate output from RX to FPGA fabric        # o_CH0_LDR_RX2CORE
 		self.p_ch0_ff_rx_f_clk_dis    = Const(0)   # Disable `FF_RX_F_CLK`                                           # p_CH0_FF_RX_F_CLK_DIS: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_ff_rx_h_clk_en     = Const(0)   # Enable `FF_RX_H_CLK`                                            # p_CH0_FF_RX_H_CLK_EN: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_invert_rx          = Const(0)   # Invert channel RX P/N IO pair                                   # p_CH0_INVERT_RX: "DONTCARE" "0b0" "0b1"
@@ -376,30 +401,6 @@ class DCU(Elaboratable):
 		self.p_ch0_rxin_cm            = Const(0)   # RX common-mode voltage for equalizer input in AC mode (0v8)     # p_CH0_RXIN_CM: "DONTCARE" "0b00"-"0b11"
 		self.p_ch0_rxterm_cm          = Const(0)   # RX common-mode voltage (supply;floating;0v;0v)                  # p_CH0_RXTERM_CM: "DONTCARE" "0b00"-"0b11"
 		self.p_ch0_sel_sd_rx_clk      = Const(0)   # RX fb_clk source CDR/FIFO clock selection ('0b1' iff usng CTC)  # p_CH0_SEL_SD_RX_CLK: "DONTCARE" "0b0" "0b1"
-		self.i_ch0_ff_ebrd_clk        = Signal()   # RX CTC FIFO clock from FPGA fabric                              # i_CH0_FF_EBRD_CLK
-		self.i_ch0_ffc_sb_inv_rx      = Signal()   # Invert recieived data                                           # i_CH0_FFC_SB_INV_RX
-
-
-		# DCU Channel 0 - Unused
-		self.p_ch0_ge_an_enable       = Const(0)   # Gigabit Ethernet auto negotiation # p_CH0_GE_AN_ENABLE: "DONTCARE" "0b0" "0b1"
-		self.i_ch0_ffc_cdr_en_bitslip = Signal()   # # i_CH0_FFC_CDR_EN_BITSLIP
-		self.i_ch0_ffc_fb_loopback    = Signal()   # # i_CH0_FFC_FB_LOOPBACK
-		self.i_ch0_ffc_pfifo_clr      = Signal()   # # i_CH0_FFC_PFIFO_CLR
-		self.i_ch0_ffc_rrst           = Signal()   # # i_CH0_FFC_RRST
-		self.i_ch0_ffc_sb_pfifo_lp    = Signal()   # # i_CH0_FFC_SB_PFIFO_LP
-		self.o_ch0_ffs_cc_overrun     = Signal()   # # o_CH0_FFS_CC_OVERRUN
-		self.o_ch0_ffs_cc_underrun    = Signal()   # # o_CH0_FFS_CC_UNDERRUN
-		self.o_ch0_ffs_ls_sync_status = Signal()   # # o_CH0_FFS_LS_SYNC_STATUS
-		self.o_ch0_ffs_pcie_con       = Signal()   # # o_CH0_FFS_PCIE_CON
-		self.o_ch0_ffs_pcie_done      = Signal()   # # o_CH0_FFS_PCIE_DONE
-		self.o_ch0_ffs_rlol           = Signal()   # # o_CH0_FFS_RLOL
-		self.o_ch0_ffs_rlos           = Signal()   # # o_CH0_FFS_RLOS
-		self.o_ch0_ffs_skp_added      = Signal()   # # o_CH0_FFS_SKP_ADDED
-		self.o_ch0_ffs_skp_deleted    = Signal()   # # o_CH0_FFS_SKP_DELETED
-		self.p_ch0_protocol           = Const(0)   # # p_CH0_PROTOCOL: "DONTCARE" "PCIE" "GBE" "SGMII" "XAUI" "SDI" "CPRI" "JESD204" "EDP" "G8B10B" "8BSER" "10BSER"
-
-
-
 		# DCU Channel 1
 		self.i_ch1_ff_ebrd_clk        = Signal()   # # i_CH1_FF_EBRD_CLK
 		self.i_ch1_ff_rxi_clk         = Signal()   # # i_CH1_FF_RXI_CLK
