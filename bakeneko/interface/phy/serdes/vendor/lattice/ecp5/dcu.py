@@ -241,43 +241,43 @@ class DCU(Elaboratable):
 		self.i_ch0_ffc_pfifo_clr      = Signal()   # Clear SerDes bridge RX-TX parallel loopback FIFO           # i_CH0_FFC_PFIFO_CLR
 		self.i_ch0_ffc_sb_pfifo_lp    = Signal()   # SerDes bridge RX-TX parallel loopback                      # i_CH0_FFC_SB_PFIFO_LP
 		self.i_ch0_ffc_signal_detect  = Signal()   # Signal detected                                            # i_CH0_FFC_SIGNAL_DETECT
-		self.i_ch0_hdinn              = Signal()   #                                                            # i_CH0_HDINN
-		self.i_ch0_hdinp              = Signal()   #                                                            # i_CH0_HDINP
+		self.i_ch0_hdinn              = Signal()   # Transciver RX input N                                      # i_CH0_HDINN
+		self.i_ch0_hdinp              = Signal()   # Transciver RX input P                                      # i_CH0_HDINP
 		self.o_ch0_ffs_ls_sync_status = Signal()   # Comma syncronization status                                # o_CH0_FFS_LS_SYNC_STATUS
 		self.o_ch0_ffs_pcie_con       = Signal()   # Result of far-end PCIe receivver detection                 # o_CH0_FFS_PCIE_CON
 		self.o_ch0_ffs_pcie_done      = Signal()   # Far-end PCIe recevier detection completed                  # o_CH0_FFS_PCIE_DONE
-		self.o_ch0_ffs_skp_added      = Signal()   # Transicver CTC added a `SKP` character                     # o_CH0_FFS_SKP_ADDED
+		self.o_ch0_ffs_skp_added      = Signal()   # Transciver CTC added a `SKP` character                     # o_CH0_FFS_SKP_ADDED
 		self.o_ch0_ffs_skp_deleted    = Signal()   # Transciver CTC removed a `SKP` character                   # o_CH0_FFS_SKP_DELETED
-		self.o_ch0_hdoutn             = Signal()   #                                                            # o_CH0_HDOUTN
-		self.o_ch0_hdoutp             = Signal()   #                                                            # o_CH0_HDOUTP
+		self.o_ch0_hdoutn             = Signal()   # Transciver TX output N                                     # o_CH0_HDOUTN
+		self.o_ch0_hdoutp             = Signal()   # Transciver TX output P                                     # o_CH0_HDOUTP
 		self.p_ch0_auto_calib_en      = Const(0)   # (DCO?) Slow calibraiton - Full                             # p_CH0_AUTO_CALIB_EN: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_auto_facq_en       = Const(0)   # (DCO?) Fast calibration - Frquency only                    # p_CH0_AUTO_FACQ_EN: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_band_threshold     = Const(0)   #                                                            # p_CH0_BAND_THRESHOLD: "DONTCARE" "0d0"-"0d63"
+		self.p_ch0_band_threshold     = Const(0)   # Equalization band thresholding? (undocumented)             # p_CH0_BAND_THRESHOLD: "DONTCARE" "0d0"-"0d63"
 		self.p_ch0_calib_ck_mode      = Const(0)   # DCO Calibration clock mode (div/2;bypass)                  # p_CH0_CALIB_CK_MODE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_cc_match_1         = Const(0)   # Skip character 1                                           # p_CH0_CC_MATCH_1: "DONTCARE" "0x000"-"0x3ff"
 		self.p_ch0_cc_match_2         = Const(0)   # Skip character 2                                           # p_CH0_CC_MATCH_2: "DONTCARE" "0x000"-"0x3ff"
 		self.p_ch0_cc_match_3         = Const(0)   # Skip character 3                                           # p_CH0_CC_MATCH_3: "DONTCARE" "0x000"-"0x3ff"
 		self.p_ch0_cc_match_4         = Const(0)   # Skip character 4                                           # p_CH0_CC_MATCH_4: "DONTCARE" "0x000"-"0x3ff"
-		self.p_ch0_cdr_cnt4sel        = Const(0)   #                                                            # p_CH0_CDR_CNT4SEL: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_cdr_cnt8sel        = Const(0)   #                                                            # p_CH0_CDR_CNT8SEL: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_cdr_max_rate       = Const(0)   #                                                            # p_CH0_CDR_MAX_RATE: "DONTCARE" "0.27"-"5"
+		self.p_ch0_cdr_cnt4sel        = Const(0)   # CDR count(?) 4-bit selection?                              # p_CH0_CDR_CNT4SEL: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_cdr_cnt8sel        = Const(0)   # CDR count(?) 8-bit selection?                              # p_CH0_CDR_CNT8SEL: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_cdr_max_rate       = Const(0)   # Max input data rate for CDR? (undocumented)                # p_CH0_CDR_MAX_RATE: "DONTCARE" "0.27"-"5"
 		self.p_ch0_ctc_bypass         = Const(0)   # Bypass clock-tolerance compensation                        # p_CH0_CTC_BYPASS: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_dcoatdcfg          = Const(0)   #                                                            # p_CH0_DCOATDCFG: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_dcoatddly          = Const(0)   #                                                            # p_CH0_DCOATDDLY: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_dcobypsatd         = Const(0)   #                                                            # p_CH0_DCOBYPSATD: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_dcocaldiv          = Const(0)   #                                                            # p_CH0_DCOCALDIV: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcoctlgi           = Const(0)   #                                                            # p_CH0_DCOCTLGI: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcodisbdavoid      = Const(0)   #                                                            # p_CH0_DCODISBDAVOID: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_dcofltdac          = Const(0)   #                                                            # p_CH0_DCOFLTDAC: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_dcoftnrg           = Const(0)   #                                                            # p_CH0_DCOFTNRG: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcoiostune         = Const(0)   #                                                            # p_CH0_DCOIOSTUNE: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcoitune           = Const(0)   #                                                            # p_CH0_DCOITUNE: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_dcoitune4lsb       = Const(0)   #                                                            # p_CH0_DCOITUNE4LSB: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcoiupdnx2         = Const(0)   #                                                            # p_CH0_DCOIUPDNX2: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_dconuoflsb         = Const(0)   #                                                            # p_CH0_DCONUOFLSB: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcoscalei          = Const(0)   #                                                            # p_CH0_DCOSCALEI: "DONTCARE" "0b00"-"0b11"
-		self.p_ch0_dcostartval        = Const(0)   #                                                            # p_CH0_DCOSTARTVAL: "DONTCARE" "0b000"-"0b111"
-		self.p_ch0_dcostep            = Const(0)   #                                                            # p_CH0_DCOSTEP: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_dcoatdcfg          = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOATDCFG: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_dcoatddly          = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOATDDLY: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_dcobypsatd         = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOBYPSATD: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_dcocaldiv          = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOCALDIV: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcoctlgi           = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOCTLGI: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcodisbdavoid      = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCODISBDAVOID: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_dcofltdac          = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOFLTDAC: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_dcoftnrg           = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOFTNRG: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcoiostune         = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOIOSTUNE: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcoitune           = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOITUNE: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_dcoitune4lsb       = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOITUNE4LSB: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcoiupdnx2         = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOIUPDNX2: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_dconuoflsb         = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCONUOFLSB: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcoscalei          = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOSCALEI: "DONTCARE" "0b00"-"0b11"
+		self.p_ch0_dcostartval        = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOSTARTVAL: "DONTCARE" "0b000"-"0b111"
+		self.p_ch0_dcostep            = Const(0)   # DCO Tuning? (undocumented)                                 # p_CH0_DCOSTEP: "DONTCARE" "0b00"-"0b11"
 		self.p_ch0_dec_bypass         = Const(0)   # Bypass channel 8b10b decoder                               # p_CH0_DEC_BYPASS: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_enable_cg_align    = Const(0)   # Continuous comma alignment (only if `UC_MODE` is enabled)  # p_CH0_ENABLE_CG_ALIGN: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_enc_bypass         = Const(0)   # Bypass channel 8b10b endocer                               # p_CH0_ENC_BYPASS: "DONTCARE" "0b0" "0b1"
@@ -290,9 +290,9 @@ class DCU(Elaboratable):
 		self.p_ch0_pcie_mode          = Const(0)   # PCIe mode                                                  # p_CH0_PCIE_MODE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_pcs_det_time_sel   = Const(0)   # Connection detection time (8us;2us;4us;16us)               # p_CH0_PCS_DET_TIME_SEL: "DONTCARE" "0b00"-"0b11"
 		self.p_ch0_pden_sel           = Const(0)   # Disable CDR phase-detector on electrical idle              # p_CH0_PDEN_SEL: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_prbs_enable        = Const(0)   #                                                            # p_CH0_PRBS_ENABLE: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_prbs_lock          = Const(0)   #                                                            # p_CH0_PRBS_LOCK: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_prbs_selection     = Const(0)   #                                                            # p_CH0_PRBS_SELECTION: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_prbs_enable        = Const(0)   # PRBS Test machinery? (undocumented)                        # p_CH0_PRBS_ENABLE: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_prbs_lock          = Const(0)   # PRBS Test machinery? (undocumented)                        # p_CH0_PRBS_LOCK: "DONTCARE" "0b0" "0b1"
+		self.p_ch0_prbs_selection     = Const(0)   # PRBS Test machinery? (undocumented)                        # p_CH0_PRBS_SELECTION: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_protocol           = Const(0)   # Channel protocol                                           # p_CH0_PROTOCOL: "DONTCARE" "PCIE" "GBE" "SGMII" "XAUI" "SDI" "CPRI" "JESD204" "EDP" "G8B10B" "8BSER" "10BSER"
 		self.p_ch0_reg_band_offset    = Const(0)   # DCO band offset control                                    # p_CH0_REG_BAND_OFFSET: "DONTCARE" "0d0"-"0d15"
 		self.p_ch0_reg_band_sel       = Const(0)   # DCO bad selection (0-63 when `AUTO_CALIB_EN`)              # p_CH0_REG_BAND_SEL: "DONTCARE" "0d0"-"0d63"
@@ -302,9 +302,9 @@ class DCU(Elaboratable):
 		self.p_ch0_rpwdnb             = Const(0)   # Channel RX power-down                                      # p_CH0_RPWDNB: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_tpwdnb             = Const(0)   # Channel TX power-down                                      # p_CH0_TPWDNB: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_uc_mode            = Const(0)   # User-configured mode                                       # p_CH0_UC_MODE: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_udf_comma_a        = Const(0)   #                                                            # p_CH0_UDF_COMMA_A: "DONTCARE" "0x000"-"0x3ff"
-		self.p_ch0_udf_comma_b        = Const(0)   #                                                            # p_CH0_UDF_COMMA_B: "DONTCARE" "0x000"-"0x3ff"
-		self.p_ch0_udf_comma_mask     = Const(0)   #                                                            # p_CH0_UDF_COMMA_MASK: "DONTCARE" "0x000"-"0x3ff"
+		self.p_ch0_udf_comma_a        = Const(0)   # 8b10b comma A                                              # p_CH0_UDF_COMMA_A: "DONTCARE" "0x000"-"0x3ff"
+		self.p_ch0_udf_comma_b        = Const(0)   # 8b10b comma B                                              # p_CH0_UDF_COMMA_B: "DONTCARE" "0x000"-"0x3ff"
+		self.p_ch0_udf_comma_mask     = Const(0)   # 8b10b comma mask                                           # p_CH0_UDF_COMMA_MASK: "DONTCARE" "0x000"-"0x3ff"
 		self.p_ch0_wa_bypass          = Const(0)   # Bypass word aligner                                        # p_CH0_WA_BYPASS: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_wa_mode            = Const(0)   # Barell-shifter or Bitslip alignment mode                   # p_CH0_WA_MODE: "DONTCARE" "0b0" "0b1"
 
@@ -350,9 +350,9 @@ class DCU(Elaboratable):
 		self.p_ch0_tx_gear_mode       = Const(0)   # Default 2:1 TX gearing mode                                                                                                    # p_CH0_TX_GEAR_MODE: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_tx_post_sign       = Const(0)   # TX post-emphasis inversion                                                                                                     # p_CH0_TX_POST_SIGN: "DONTCARE" "0b0" "0b1"
 		self.p_ch0_tx_pre_sign        = Const(0)   # TX pre-emphasis inversion                                                                                                      # p_CH0_TX_PRE_SIGN: "DONTCARE" "0b0" "0b1"
-		self.p_ch0_txamplitude        = Const(0)   #                                                                                                                                # p_CH0_TXAMPLITUDE: "DONTCARE" "0d0"-"0d9"
-		self.p_ch0_txdepost           = Const(0)   #                                                                                                                                # p_CH0_TXDEPOST: "DONTCARE" "0d0"-"0d9"
-		self.p_ch0_txdepre            = Const(0)   #                                                                                                                                # p_CH0_TXDEPRE: "DONTCARE" "0d0"-"0d9"
+		self.p_ch0_txamplitude        = Const(0)   # Power calibaration for TX Amplitude? (undocumented)                                                                            # p_CH0_TXAMPLITUDE: "DONTCARE" "0d0"-"0d1300"
+		self.p_ch0_txdepost           = Const(0)   # Power calibaration for TX pre-emphesis? (undocumented)                                                                         # p_CH0_TXDEPOST: "DONTCARE" "DISABLED" "0d0"-"0d11"
+		self.p_ch0_txdepre            = Const(0)   # Power calibaration for TX post-emphesis? (undocumented)                                                                        # p_CH0_TXDEPRE: "DONTCARE" "DISABLED" "0d0"-"0d11"
 
 		# DCU Channel 0 - RX
 		self.i_ch0_ff_ebrd_clk        = Signal()   # RX CTC FIFO clock from FPGA fabric                              # i_CH0_FF_EBRD_CLK
@@ -401,6 +401,8 @@ class DCU(Elaboratable):
 		self.p_ch0_rxin_cm            = Const(0)   # RX common-mode voltage for equalizer input in AC mode (0v8)     # p_CH0_RXIN_CM: "DONTCARE" "0b00"-"0b11"
 		self.p_ch0_rxterm_cm          = Const(0)   # RX common-mode voltage (supply;floating;0v;0v)                  # p_CH0_RXTERM_CM: "DONTCARE" "0b00"-"0b11"
 		self.p_ch0_sel_sd_rx_clk      = Const(0)   # RX fb_clk source CDR/FIFO clock selection ('0b1' iff usng CTC)  # p_CH0_SEL_SD_RX_CLK: "DONTCARE" "0b0" "0b1"
+
+
 		# DCU Channel 1
 		self.i_ch1_ff_ebrd_clk        = Signal()   # # i_CH1_FF_EBRD_CLK
 		self.i_ch1_ff_rxi_clk         = Signal()   # # i_CH1_FF_RXI_CLK
